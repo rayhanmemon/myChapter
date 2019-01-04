@@ -22,7 +22,7 @@ FeedStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-paper${focused ? '' : '-outline'}` : 'md-paper'}
+      name={Platform.OS === 'ios' ? `ios-paper` : 'md-paper'}
       color={tintColor}
     />
   ),
@@ -39,7 +39,7 @@ EventsStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-person${focused ? '' : '-outline'}` : 'md-person'}
+      name={Platform.OS === 'ios' ? `ios-person` : 'md-person'}
       color={tintColor}
     />
   ),
@@ -56,7 +56,7 @@ ActivesStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
+      name={Platform.OS === 'ios' ? `ios-contacts` : 'md-contacts'}
       color={tintColor}
     />
   ),
@@ -70,7 +70,7 @@ export default createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: 'red',
+      activeTintColor: 'blue',
       inactiveTintColor: 'gray',
     }
   }

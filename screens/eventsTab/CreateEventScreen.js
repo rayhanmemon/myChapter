@@ -75,7 +75,7 @@ class CreateEventScreen extends Component {
               isVisible={this.props.isStartTimePickerVisible}
               onConfirm={(startTime) => this.handleStartTimePicked(startTime)}
               onCancel={() => this.props.hideStartTimePicker()}
-            />*/}
+            />
           </View>
           <View>
             <Button onPress={() => this.props.showEndTimePicker()}>
