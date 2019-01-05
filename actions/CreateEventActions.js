@@ -8,8 +8,47 @@ import {
   HIDE_START_TIME_PICKER,
   SHOW_END_TIME_PICKER,
   HIDE_END_TIME_PICKER,
+  EVENT_NAME_CHANGED,
+  EVENT_DESCRIPTION_CHANGED,
+  SET_EVENT_DATE,
   SET_START_TIME,
+  SET_END_TIME,
 } from '../constants/Types';
+
+export const eventNameChanged = (text) => {
+  return ({
+    type: EVENT_NAME_CHANGED,
+    payload: text
+  });
+};
+
+export const setEventDate = (text) => {
+  return ({
+    type: SET_EVENT_DATE,
+    payload: text
+  });
+};
+
+export const setStartTime = (text) => {
+  return ({
+    type: SET_START_TIME,
+    payload: text
+  });
+};
+
+export const setEndTime = (text) => {
+  return ({
+    type: SET_END_TIME,
+    payload: text
+  });
+};
+
+export const eventDescriptionChanged = (text) => {
+  return ({
+    type: EVENT_DESCRIPTION_CHANGED,
+    payload: text
+  });
+};
 
 export const showDatePicker = () => {
   return ({ type: SHOW_DATE_PICKER });
@@ -33,8 +72,4 @@ export const showEndTimePicker = () => {
 
 export const hideEndTimePicker = () => {
   return ({ type: HIDE_END_TIME_PICKER });
-};
-
-export const setStartTime = (time) => {
-  return ({ type: SET_START_TIME, payload: time });
 };

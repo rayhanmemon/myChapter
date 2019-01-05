@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Content, View, Button, Text, Form, Input, Item } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-//import TimePicker from 'react-time-picker';
 
 import {
   hideDatePicker,
@@ -11,7 +10,11 @@ import {
   hideStartTimePicker,
   showEndTimePicker,
   hideEndTimePicker,
-  setStartTime
+  eventNameChanged,
+  eventDescriptionChanged,
+  setEventDate,
+  setStartTime,
+  setEndTime,
 } from '../../actions/CreateEventActions';
 
 class CreateEventScreen extends Component {
@@ -25,16 +28,22 @@ class CreateEventScreen extends Component {
 
   handleDatePicked = (date) => {
     console.log('date: ', date);
+    const dateString = '2019-01-21';
+    this.props.setEventDate(dateString);
     this.props.hideDatePicker();
   };
 
   handleStartTimePicked = (startTime) => {
     console.log('Start Time: ', startTime);
+    const startTimeString = '7:00 PM';
+    this.props.setStartTime(startTimeString);
     this.props.hideStartTimePicker();
   };
 
   handleEndTimePicked = (endTime) => {
     console.log('End Time: ', endTime);
+    const endTimeString = '11:59 PM';
+    this.props.setEndTime(endTimeString);
     this.props.hideEndTimePicker();
   };
 
@@ -45,49 +54,76 @@ class CreateEventScreen extends Component {
           <Form style={styles.form}>
             <Text style={styles.label}>Event Name</Text>
             <Item style={{ marginBottom: 10 }}>
-              <Input />
+              <Input
+                onChangeText={this.props.eventNameChanged.bind(this)}
+                value={this.props.eventName}
+              />
             </Item>
             <Text style={styles.label}>Event Description</Text>
-            <Item>
-              <Input />
+            <Item style={{ marginBottom: 10 }}>
+              <Input
+              onChangeText={this.props.eventDescriptionChanged.bind(this)}
+              value={this.props.eventDescription}
+              />
+            </Item>
+            <Text style={styles.label}>Event Date</Text>
+            <Item style={{ marginBottom: 10 }}>
+              <View style={{ flex: 1, marginTop: 10, marginBottom: 10 }}>
+                <Button
+                  transparent
+                  danger
+                  onPress={() => this.props.showDatePicker()}
+                >
+                 <Text>Select Date</Text>
+                </Button>
+                <DateTimePicker
+                  isVisible={this.props.isDatePickerVisible}
+                  onConfirm={(date) => this.handleDatePicked(date)}
+                  onCancel={() => this.props.hideDatePicker()}
+                />
+              </View>
+            </Item>
+            <Text style={styles.label}>Event Time</Text>
+            <Item style={{ marginBottom: 10 }}>
+              <View style={{ flex: 1, flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                <View>
+                  <Button
+                    transparent
+                    danger
+                    onPress={() => this.props.showStartTimePicker()}
+                  >
+                    <Text>Select Start Time</Text>
+                  </Button>
+                  <DateTimePicker
+                    mode='time'
+                    is24Hour={false}
+                    isVisible={this.props.isStartTimePickerVisible}
+                    onConfirm={(startTime) => this.handleStartTimePicked(startTime)}
+                    onCancel={() => this.props.hideStartTimePicker()}
+                  />
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text> - </Text>
+                </View>
+                <View>
+                  <Button
+                    transparent
+                    danger
+                    onPress={() => this.props.showEndTimePicker()}
+                  >
+                    <Text>Select End Time</Text>
+                  </Button>
+                  <DateTimePicker
+                    mode='time'
+                    is24Hour={false}
+                    isVisible={this.props.isEndTimePickerVisible}
+                    onConfirm={(endTime) => this.handleEndTimePicked(endTime)}
+                    onCancel={() => this.props.hideEndTimePicker()}
+                  />
+                </View>
+              </View>
             </Item>
           </Form>
-          <View style={{ flex: 1 }}>
-            <Button onPress={() => this.props.showDatePicker()}>
-              <Text>Event Date</Text>
-            </Button>
-            <DateTimePicker
-              isVisible={this.props.isDatePickerVisible}
-              onConfirm={(date) => this.handleDatePicked(date)}
-              onCancel={() => this.props.hideDatePicker()}
-            />
-          </View>
-          <View style={{ flex: 1 }}>
-            {/*<TimePicker
-              onChange={(time) => this.props.setStartTime(time)}
-              value={this.startTime}
-            />*/}
-            <Button onPress={() => this.props.showStartTimePicker()}>
-              <Text>Start Time</Text>
-            </Button>
-            <DateTimePicker
-              mode='time'
-              isVisible={this.props.isStartTimePickerVisible}
-              onConfirm={(startTime) => this.handleStartTimePicked(startTime)}
-              onCancel={() => this.props.hideStartTimePicker()}
-            />
-          </View>
-          <View>
-            <Button onPress={() => this.props.showEndTimePicker()}>
-              <Text>End Time</Text>
-            </Button>
-            <DateTimePicker
-              mode='time'
-              isVisible={this.props.isEndTimePickerVisible}
-              onConfirm={(endTime) => this.handleEndTimePicked(endTime)}
-              onCancel={() => this.props.hideEndTimePicker()}
-            />
-          </View>
         </Content>
       </Container>
     );
@@ -99,7 +135,8 @@ const styles = {
     margin: 15
   },
   label: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginLeft: 15
   }
 };
 
@@ -109,7 +146,13 @@ const mapStateToProps = (state) => {
     isDatePickerVisible,
     isStartTimePickerVisible,
     isEndTimePickerVisible,
-    startTime
+    eventName,
+    eventDescription,
+    eventDate,
+    startTime,
+    endTime,
+    latitude,
+    longitude
   } = state.createEvent;
   return ({
     organization,
@@ -120,7 +163,13 @@ const mapStateToProps = (state) => {
     isDatePickerVisible,
     isStartTimePickerVisible,
     isEndTimePickerVisible,
-    startTime
+    eventName,
+    eventDescription,
+    eventDate,
+    startTime,
+    endTime,
+    latitude,
+    longitude
   });
 };
 
@@ -131,5 +180,9 @@ export default connect(mapStateToProps, {
   hideStartTimePicker,
   showEndTimePicker,
   hideEndTimePicker,
-  setStartTime
+  eventNameChanged,
+  eventDescriptionChanged,
+  setEventDate,
+  setStartTime,
+  setEndTime,
 })(CreateEventScreen);

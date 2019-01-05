@@ -6,7 +6,11 @@ import {
   HIDE_START_TIME_PICKER,
   SHOW_END_TIME_PICKER,
   HIDE_END_TIME_PICKER,
-  SET_START_TIME
+  EVENT_NAME_CHANGED,
+  EVENT_DESCRIPTION_CHANGED,
+  SET_EVENT_DATE,
+  SET_START_TIME,
+  SET_END_TIME,
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -15,11 +19,9 @@ const INITIAL_STATE = {
   isDatePickerVisible: false,
   isStartTimePickerVisible: false,
   isEndTimePickerVisible: false,
-  eventYear: 0,
-  eventMonth: 0,
-  eventDay: 0,
-  startTime: '10:00',
-  endTime: '11:00',
+  eventDate: 'Select Date',
+  startTime: 'Select Start Time',
+  endTime: 'Select End Time',
   latitude: 0,
   longitude: 0,
 };
@@ -40,8 +42,16 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isEndTimePickerVisible: true };
     case HIDE_END_TIME_PICKER:
       return { ...state, isEndTimePickerVisible: false };
+    case EVENT_NAME_CHANGED:
+      return { ...state, eventName: action.payload };
+    case EVENT_DESCRIPTION_CHANGED:
+      return { ...state, eventDescription: action.payload };
+    case SET_EVENT_DATE:
+      return { ...state, eventDate: action.payload };
     case SET_START_TIME:
       return { ...state, startTime: action.payload };
+    case SET_END_TIME:
+      return { ...state, endTime: action.payload };
     default:
       return INITIAL_STATE;
   }
