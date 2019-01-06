@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Container, Content, Thumbnail, Form, Item, Input, Label, Button, Text, Picker, Spinner } from 'native-base';
+import { Container, Content, Thumbnail, Form, Item, Input, Label, Button, Text, Picker, Spinner, Icon } from 'native-base';
 import { ImagePicker } from 'expo';
 import * as firebase from 'firebase';
 
@@ -76,8 +76,9 @@ class EditStats extends Component {
              <Picker
                mode="dropdown"
                style={{ width: undefined }}
+               iosIcon={<Icon name="ios-arrow-down" />}
                placeholder='Privileges'
-               placeholderStyle={{ color: '#00f' }}
+               placeholderStyle={{ color: 'black' }}
                selectedValue={admin}
                onValueChange={this.props.adminEdited.bind(this)}
              >
@@ -90,7 +91,8 @@ class EditStats extends Component {
                mode="dropdown"
                style={{ width: undefined }}
                placeholder='Standing'
-               placeholderStyle={{ color: '#00f' }}
+               iosIcon={<Icon name="ios-arrow-down" />}
+               placeholderStyle={{ color: 'black' }}
                selectedValue={goodStanding}
                onValueChange={this.props.goodStandingEdited.bind(this)}
              >
@@ -99,7 +101,7 @@ class EditStats extends Component {
              </Picker>
             </Item>
             <Item>
-              <Label>Position</Label>
+              <Label style={{ color: 'black' }}>Position</Label>
               <Input
                 placeholder={positionInitial}
                 onChangeText={this.props.positionEdited.bind(this)}
@@ -107,7 +109,7 @@ class EditStats extends Component {
               />
             </Item>
             <Item>
-              <Label>Dues</Label>
+              <Label style={{ color: 'black' }}>Dues</Label>
               <Input
                 placeholder={duesInitial}
                 onChangeText={this.props.duesEdited.bind(this)}
@@ -115,7 +117,7 @@ class EditStats extends Component {
               />
             </Item>
             <Item>
-              <Label>Community Service</Label>
+              <Label style={{ color: 'black' }}>Community Service</Label>
               <Input
                 placeholder={communityServiceInitial}
                 onChangeText={this.props.communityServiceEdited.bind(this)}
@@ -123,7 +125,7 @@ class EditStats extends Component {
               />
             </Item>
             <Item>
-              <Label>Chapters</Label>
+              <Label style={{ color: 'black' }}>Chapters</Label>
               <Input
                 placeholder={chaptersInitial}
                 onChangeText={this.props.chaptersEdited.bind(this)}
@@ -131,7 +133,7 @@ class EditStats extends Component {
               />
             </Item>
             <Item>
-              <Label>Mixers</Label>
+              <Label style={{ color: 'black' }}>Mixers</Label>
               <Input
                 placeholder={mixersInitial}
                 onChangeText={this.props.mixersEdited.bind(this)}
@@ -139,7 +141,7 @@ class EditStats extends Component {
               />
             </Item>
             <Item>
-              <Label>Brotherhoods</Label>
+              <Label style={{ color: 'black' }}>Brotherhoods</Label>
               <Input
                 placeholder={brotherhoodsInitial}
                 onChangeText={this.props.brotherhoodsEdited.bind(this)}

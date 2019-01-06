@@ -11,6 +11,10 @@ import {
   SET_EVENT_DATE,
   SET_START_TIME,
   SET_END_TIME,
+  LATITUDE_CHANGED,
+  LONGITUDE_CHANGED,
+  SET_EVENT_TYPE,
+  LOCATION_NAME_CHANGED
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -22,14 +26,20 @@ const INITIAL_STATE = {
   eventDate: 'Select Date',
   startTime: 'Select Start Time',
   endTime: 'Select End Time',
-  latitude: 0,
-  longitude: 0,
+  locationName: '',
+  latitude: '',
+  longitude: '',
+  eventType: '',
+  loading: false,
+  year: 0,
+  month: 0,
+  day: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CREATE_EVENT_ATTEMPT:
-      return { ...state };
+      return { ...state, loading: true };
     case SHOW_DATE_PICKER:
       return { ...state, isDatePickerVisible: true };
     case HIDE_DATE_PICKER:
@@ -47,11 +57,25 @@ export default (state = INITIAL_STATE, action) => {
     case EVENT_DESCRIPTION_CHANGED:
       return { ...state, eventDescription: action.payload };
     case SET_EVENT_DATE:
-      return { ...state, eventDate: action.payload };
+      return {
+        ...state,
+        eventDate: action.payload.dateString,
+        year: action.payload.year,
+        month: action.payload.month,
+        day: action.payload.day
+      };
     case SET_START_TIME:
       return { ...state, startTime: action.payload };
     case SET_END_TIME:
       return { ...state, endTime: action.payload };
+    case LATITUDE_CHANGED:
+      return { ...state, latitude: action.payload };
+    case LONGITUDE_CHANGED:
+      return { ...state, longitude: action.payload };
+    case SET_EVENT_TYPE:
+      return { ...state, eventType: action.payload };
+    case LOCATION_NAME_CHANGED:
+      return { ...state, locationName: action.payload };
     default:
       return INITIAL_STATE;
   }

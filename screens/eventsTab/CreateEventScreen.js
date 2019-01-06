@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, View, Button, Text, Form, Input, Item } from 'native-base';
+import { Container, Content, View, Button, Text, Form, Input, Item, Picker, Icon, Spinner } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import {
@@ -15,6 +15,11 @@ import {
   setEventDate,
   setStartTime,
   setEndTime,
+  longitudeChanged,
+  latitudeChanged,
+  setEventType,
+  createEvent,
+  locationNameChanged
 } from '../../actions/CreateEventActions';
 
 class CreateEventScreen extends Component {
@@ -27,31 +32,68 @@ class CreateEventScreen extends Component {
   };
 
   handleDatePicked = (date) => {
-    console.log('date: ', date);
-    const dateString = '2019-01-21';
-    this.props.setEventDate(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const string = date.toString();
+    const dateString = string.substring(0, 15);
+    this.props.setEventDate(dateString, year, month, day);
     this.props.hideDatePicker();
   };
 
   handleStartTimePicked = (startTime) => {
-    console.log('Start Time: ', startTime);
-    const startTimeString = '7:00 PM';
+    const string = startTime.toString();
+    const startTimeString = string.substring(16, 21);
     this.props.setStartTime(startTimeString);
     this.props.hideStartTimePicker();
   };
 
   handleEndTimePicked = (endTime) => {
-    console.log('End Time: ', endTime);
-    const endTimeString = '11:59 PM';
+    const string = endTime.toString();
+    const endTimeString = string.substring(16, 21);
     this.props.setEndTime(endTimeString);
     this.props.hideEndTimePicker();
   };
+
+  renderButton() {
+    const { organization, locationName, eventDate, year, month, day, loading, longitude, latitude, startTime, endTime, eventDescription, eventName, eventType } = this.props;
+    if (loading) {
+      return <Spinner />;
+    } return (
+      <Button
+        style={{ margin: 20 }}
+        full
+        danger
+        onPress={() => this.props.createEvent(organization, locationName, eventDate, year, month, day, longitude, latitude, startTime, endTime, eventDescription, eventName, eventType)}
+      >
+        <Text>CREATE EVENT</Text>
+      </Button>
+    );
+  }
 
   render() {
     return (
       <Container>
         <Content>
           <Form style={styles.form}>
+          <Text style={styles.label}>Event Type</Text>
+          <Item picker style={{ marginBottom: 10 }}>
+           <Picker
+             mode="dropdown"
+             style={{ width: undefined }}
+             iosIcon={<Icon name="ios-arrow-down" />}
+             placeholder='Select Event Type'
+             placeholderStyle={{ color: 'red' }}
+             selectedValue={this.props.eventType}
+             onValueChange={this.props.setEventType.bind(this)}
+           >
+             <Picker.Item label="Chapter" value='chapter' />
+             <Picker.Item label="Mixer" value='mixer' />
+             <Picker.Item label="Brotherhood" value='brotherhood' />
+             <Picker.Item label="Community Service" value='communityService' />
+             <Picker.Item label="Other" value='' />
+           </Picker>
+          </Item>
             <Text style={styles.label}>Event Name</Text>
             <Item style={{ marginBottom: 10 }}>
               <Input
@@ -74,7 +116,7 @@ class CreateEventScreen extends Component {
                   danger
                   onPress={() => this.props.showDatePicker()}
                 >
-                 <Text>Select Date</Text>
+                 <Text>{this.props.eventDate}</Text>
                 </Button>
                 <DateTimePicker
                   isVisible={this.props.isDatePickerVisible}
@@ -92,7 +134,7 @@ class CreateEventScreen extends Component {
                     danger
                     onPress={() => this.props.showStartTimePicker()}
                   >
-                    <Text>Select Start Time</Text>
+                    <Text>{this.props.startTime}</Text>
                   </Button>
                   <DateTimePicker
                     mode='time'
@@ -111,7 +153,7 @@ class CreateEventScreen extends Component {
                     danger
                     onPress={() => this.props.showEndTimePicker()}
                   >
-                    <Text>Select End Time</Text>
+                    <Text>{this.props.endTime}</Text>
                   </Button>
                   <DateTimePicker
                     mode='time'
@@ -123,7 +165,36 @@ class CreateEventScreen extends Component {
                 </View>
               </View>
             </Item>
+            <Text style={styles.label}>Event location</Text>
+            <Item style={{ flex: 1, flexDirection: 'column', marginBottom: 10 }}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                <Text style={{ fontSize: 16, marginTop: 13 }}>Location Name: </Text>
+                <Input
+                  onChangeText={this.props.locationNameChanged.bind(this)}
+                  value={this.props.locationName}
+                />
+              </View>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={{ fontSize: 16, marginTop: 13 }}>Latitude: </Text>
+              <Input
+                onChangeText={this.props.latitudeChanged.bind(this)}
+                value={this.props.latitude}
+              />
+              </View>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                <Text style={{ fontSize: 16, marginTop: 13 }}>Longitude: </Text>
+                <Input
+                  onChangeText={this.props.longitudeChanged.bind(this)}
+                  value={this.props.longitude}
+                />
+              </View>
+            </Item>
           </Form>
+          <Text style={{ fontSize: 10, marginLeft: 20, marginRight: 15 }}>
+            Note: Future updates will include a map system for selecting location.
+            For now, please use google maps to determine your check-in point.
+          </Text>
+          {this.renderButton()}
         </Content>
       </Container>
     );
@@ -152,7 +223,13 @@ const mapStateToProps = (state) => {
     startTime,
     endTime,
     latitude,
-    longitude
+    longitude,
+    eventType,
+    loading,
+    locationName,
+    year,
+    month,
+    day
   } = state.createEvent;
   return ({
     organization,
@@ -169,7 +246,13 @@ const mapStateToProps = (state) => {
     startTime,
     endTime,
     latitude,
-    longitude
+    longitude,
+    eventType,
+    loading,
+    locationName,
+    year,
+    month,
+    day
   });
 };
 
@@ -185,4 +268,9 @@ export default connect(mapStateToProps, {
   setEventDate,
   setStartTime,
   setEndTime,
+  longitudeChanged,
+  latitudeChanged,
+  setEventType,
+  createEvent,
+  locationNameChanged
 })(CreateEventScreen);
