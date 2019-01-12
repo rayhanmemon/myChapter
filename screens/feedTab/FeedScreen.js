@@ -3,7 +3,12 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, List, Card, CardItem, Thumbnail, Body, Text, Left, Button, Input, Spinner } from 'native-base';
 
-import { postChanged, sendButtonPressed, fetchFeed } from '../../actions';
+import {
+  postChanged,
+  sendButtonPressed,
+  fetchFeed,
+  deletePost
+} from '../../actions';
 
 class FeedScreen extends Component {
   static navigationOptions = {
@@ -21,6 +26,22 @@ class FeedScreen extends Component {
   onSendButtonPress = () => {
     const { postContent, firstName, lastName, rank, organization } = this.props;
     this.props.sendButtonPressed(postContent, firstName, lastName, rank, organization);
+  }
+
+  renderDeletePostButton(key) {
+    if (this.props.postToDelete === key) {
+      return <Spinner />;
+    } else if (this.props.admin) {
+      return (
+        <Button
+          transparent
+          danger
+          onPress={() => this.props.deletePost(this.props.organization, key)}
+        >
+          <Text>Delete</Text>
+        </Button>
+      );
+    } return;
   }
 
   renderButton = () => {
@@ -56,7 +77,7 @@ class FeedScreen extends Component {
   }
 
   renderPost = (post) => {
-    const { name, postContent, time } = post;
+    const { name, postContent, time, key } = post;
     return (
       <Card style={{ flex: 0 }}>
         <CardItem>
@@ -67,6 +88,7 @@ class FeedScreen extends Component {
               <Text note>{time}</Text>
             </Body>
           </Left>
+          {this.renderDeletePostButton(key)}
         </CardItem>
         <CardItem>
           <Body>
@@ -125,11 +147,25 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { postContent, posting, loadingList, feedData } = state.feed;
-  const { firstName, lastName, rank, organization } = state.auth;
-  return (
-    { postContent, posting, loadingList, feedData, firstName, lastName, rank, organization }
-  );
+  const { postContent, posting, loadingList, feedData, postToDelete } = state.feed;
+  const { firstName, lastName, rank, organization, admin } = state.auth;
+  return {
+    postContent,
+    posting,
+    loadingList,
+    feedData,
+    firstName,
+    lastName,
+    rank,
+    organization,
+    admin,
+    postToDelete
+  };
 };
 
-export default connect(mapStateToProps, { postChanged, sendButtonPressed, fetchFeed })(FeedScreen);
+export default connect(mapStateToProps, {
+  postChanged,
+  sendButtonPressed,
+  fetchFeed,
+  deletePost
+})(FeedScreen);

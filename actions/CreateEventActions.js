@@ -57,7 +57,6 @@ export const locationNameChanged = (text) => {
 };
 
 export const setEventType = (eventType) => {
-  console.log(eventType);
   return ({
     type: SET_EVENT_TYPE,
     payload: eventType
@@ -79,7 +78,6 @@ export const longitudeChanged = (text) => {
 };
 
 export const eventNameChanged = (text) => {
-  console.log(text);
   return ({
     type: EVENT_NAME_CHANGED,
     payload: text
@@ -87,31 +85,27 @@ export const eventNameChanged = (text) => {
 };
 
 export const setEventDate = (dateString, year, month, day) => {
-  console.log(`${year}-${month}-${day}`);
   return ({
     type: SET_EVENT_DATE,
     payload: { dateString, year, month, day }
   });
 };
 
-export const setStartTime = (text) => {
-  console.log(text);
+export const setStartTime = (startTimeString) => {
   return ({
     type: SET_START_TIME,
-    payload: text
+    payload: startTimeString
   });
 };
 
-export const setEndTime = (text) => {
-  console.log(text);
+export const setEndTime = (endTimeString) => {
   return ({
     type: SET_END_TIME,
-    payload: text
+    payload: endTimeString
   });
 };
 
 export const eventDescriptionChanged = (text) => {
-  console.log(text);
   return ({
     type: EVENT_DESCRIPTION_CHANGED,
     payload: text

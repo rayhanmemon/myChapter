@@ -9,7 +9,10 @@ import {
   GET_CURRENT_LOCATION_SUCCESS,
   GET_CURRENT_LOCATION_FAILED,
   EXPAND_SELECTED_EVENT,
-  COLLAPSE_SELECTED_EVENT
+  COLLAPSE_SELECTED_EVENT,
+  GET_CURRENT_DATE_AND_TIME_SUCCESS,
+  DELETE_EVENT_ATTEMPT,
+  DELETE_EVENT_SUCCESS
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -21,6 +24,8 @@ const INITIAL_STATE = {
   eventLoading: '',
   currentLatitude: 0,
   currentLongitude: 0,
+  currentDate: '',
+  eventToDelete: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -51,6 +56,12 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, selectedAttendeesList: action.payload };
     case COLLAPSE_SELECTED_EVENT:
       return { ...state, selectedAttendeesList: '' };
+    case GET_CURRENT_DATE_AND_TIME_SUCCESS:
+      return { ...state, currentDate: action.payload };
+    case DELETE_EVENT_ATTEMPT:
+      return { ...state, eventToDelete: action.payload };
+    case DELETE_EVENT_SUCCESS:
+      return { ...state, eventToDelete: '' };
     default:
       return state;
   }

@@ -2,6 +2,9 @@
   "expo": {
     "name": "myChapter",
     "slug": "myChapter",
+    "android": {
+      "package": "com.myChapter.myChapter"
+    },
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -23,7 +26,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.myChapter.myChapter"
     }
   }
 }

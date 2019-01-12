@@ -38,6 +38,8 @@ export const SEND_BUTTON_PRESSED = 'send_button_pressed';
 export const POST_SUCCESS = 'post_success';
 export const REQUEST_FEED_DATA = 'request_feed_data';
 export const REQUEST_FEED_DATA_SUCCESS = 'request_feed_data_success';
+export const DELETE_POST_ATTEMPTED = 'delete_post_attempted';
+export const DELETE_POST_SUCCESS = 'delete_post_success';
 //SelectedProfileReducer Types
 export const INITIALIZE_TOTALS = 'initialize_totals';
 export const TOGGLE_ADMIN_MODE = 'toggle_admin_mode';
@@ -64,6 +66,9 @@ export const FETCH_EVENTS_ATTENDED_SUCCESS = 'fetch_events_attended_success';
 export const CHECK_IN_SUCCESS = 'check_in_success';
 export const EXPAND_SELECTED_EVENT = 'expand_selected_event';
 export const COLLAPSE_SELECTED_EVENT = 'collapse_selected_event';
+export const GET_CURRENT_DATE_AND_TIME_SUCCESS = 'get_current_date_and_time_success';
+export const DELETE_EVENT_ATTEMPT = 'delete_event_attempt';
+export const DELETE_EVENT_SUCCESS = 'delete_event_success';
 //CreateEventReducer Types
 export const CREATE_EVENT_ATTEMPT = 'create_event_attempt';
 export const SHOW_DATE_PICKER = 'show_date_picker';

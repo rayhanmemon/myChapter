@@ -5,6 +5,7 @@ import {
   REQUEST_EVENTS_LIST_DATA,
   REQUEST_EVENTS_LIST_DATA_SUCCESS,
   REQUEST_EVENTS_LIST_DATA_FAILED,
+  GET_CURRENT_DATE_AND_TIME_SUCCESS,
   FETCH_EVENTS_ATTENDED,
   FETCH_EVENTS_ATTENDED_SUCCESS,
   CHECK_IN_ATTEMPTED,
@@ -12,9 +13,22 @@ import {
   GET_CURRENT_LOCATION_FAILED,
   CHECK_IN_SUCCESS,
   EXPAND_SELECTED_EVENT,
-  COLLAPSE_SELECTED_EVENT
+  COLLAPSE_SELECTED_EVENT,
+  DELETE_EVENT_ATTEMPT,
+  DELETE_EVENT_SUCCESS
 } from '../constants/Types';
 
+export const deleteEvent = (organization, eventKey, attendees) => {
+  return (dispatch) => {
+    dispatch({ type: DELETE_EVENT_ATTEMPT, payload: eventKey });
+    let i = 0;
+    for (i = 0; i < attendees.length; i++) {
+      firebase.database().ref(`${organization}/profiles/${attendees[i]}/eventsAttended/${eventKey}`).remove();
+    }
+      firebase.database().ref(`${organization}/events/${eventKey}`).remove();
+      dispatch({ type: DELETE_EVENT_SUCCESS });
+  };
+};
 
 export const fetchEventsList = (organization, rank) => {
   return (dispatch) => {
@@ -40,6 +54,11 @@ export const fetchEventsList = (organization, rank) => {
 
 export const getCurrentLocationAndDate = () => {
   return (dispatch) => {
+    const currentDate = new Date();
+    dispatch({
+      type: GET_CURRENT_DATE_AND_TIME_SUCCESS,
+      payload: currentDate
+    });
     navigator.geolocation.getCurrentPosition(
       (position) => {
         dispatch({
