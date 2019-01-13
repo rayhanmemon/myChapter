@@ -11,6 +11,7 @@ import CreateEventScreen from '../screens/eventsTab/CreateEventScreen';
 
 import ActivesScreen from '../screens/activesTab/ActivesScreen';
 import ProfileScreen from '../screens/activesTab/ProfileScreen';
+import AdminSettingsScreen from '../screens/activesTab/AdminSettingsScreen';
 
 //Feed Tab Navigation Setup
 const FeedStack = createStackNavigator({
@@ -22,7 +23,7 @@ FeedStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-paper` : 'md-paper'}
+      name={Platform.OS === 'ios' ? 'ios-paper' : 'md-paper'}
       color={tintColor}
     />
   ),
@@ -39,7 +40,7 @@ EventsStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-person` : 'md-person'}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
       color={tintColor}
     />
   ),
@@ -49,6 +50,7 @@ EventsStack.navigationOptions = {
 const ActivesStack = createStackNavigator({
   Actives: ActivesScreen,
   SelectedProfile: ProfileScreen,
+  AdminSettings: AdminSettingsScreen
 });
 
 ActivesStack.navigationOptions = {
@@ -56,7 +58,7 @@ ActivesStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-contacts` : 'md-contacts'}
+      name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
       color={tintColor}
     />
   ),

@@ -49,10 +49,10 @@ class EventsScreen extends Component {
       return (
         <Button
           transparent
-          info
+          danger
           onPress={() => this.props.deleteEvent(organization, eventKey, attendees)}
         >
-          <Text>Delete Event</Text>
+          <Text>Delete</Text>
         </Button>
       );
     } return;

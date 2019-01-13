@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Content, List, ListItem, Spinner, Text, Body, Right } from 'native-base';
+import { Container, Content, List, ListItem, Spinner, Text, Body, Right, Button } from 'native-base';
 import { fetchActivesList, fetchSelectedProfile } from '../../actions';
 
 class ActivesScreen extends Component {
@@ -33,13 +33,33 @@ class ActivesScreen extends Component {
       return <Spinner />;
     } else if (this.props.error) {
       return (<Text>{this.props.error}</Text>);
+    } else if (this.props.admin) {
+      return (
+      <Content>
+        <Button
+          transparent
+          danger
+          onPress={() => this.props.navigation.navigate('AdminSettings')}
+        >
+          <Text>Administrator Settings</Text>
+        </Button>
+        <List
+          enableEmptySections
+          dataArray={this.props.listData}
+          renderRow={this.renderRow}
+          keyExtractor={(active) => active.rank}
+        />
+      </Content>
+      );
     } return (
-      <List
-        enableEmptySections
-        dataArray={this.props.listData}
-        renderRow={this.renderRow}
-        keyExtractor={(active) => active.rank}
-      />
+      <Content>
+        <List
+          enableEmptySections
+          dataArray={this.props.listData}
+          renderRow={this.renderRow}
+          keyExtractor={(active) => active.rank}
+        />
+      </Content>
     );
   }
 
@@ -64,9 +84,7 @@ class ActivesScreen extends Component {
   render() {
     return (
       <Container>
-        <Content>
-          {this.renderActivesList()}
-        </Content>
+        {this.renderActivesList()}
       </Container>
     );
   }
