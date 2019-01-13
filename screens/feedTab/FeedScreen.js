@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Content, List, Card, CardItem, Thumbnail, Body, Text, Left, Button, Input, Spinner } from 'native-base';
+import { Container, Content, List, Card, CardItem, Thumbnail, Body, Text, Left, Right, Button, Input, Spinner } from 'native-base';
 
 import {
   postChanged,
   sendButtonPressed,
   fetchFeed,
-  deletePost
+  deletePost,
+  showComments,
+  renderCommentInput,
+  hideCommentInput,
+  commentChanged,
+  onCommentButtonPress
 } from '../../actions';
 
 class FeedScreen extends Component {
@@ -38,25 +43,57 @@ class FeedScreen extends Component {
           danger
           onPress={() => this.props.deletePost(this.props.organization, key)}
         >
-          <Text>Delete</Text>
+          <Text style={{ fontSize: 12 }}>Delete</Text>
         </Button>
       );
     } return;
   }
 
   renderButton = () => {
+    console.log(this.props.commentContent);
     if (this.props.posting) {
       return (
         <Spinner />
       );
-    } else if (this.props.postContent === '') {
-      return;
     } return (
       <Button
         style={styles.sendButton}
         onPress={() => this.onSendButtonPress()}
       >
         <Text style={styles.sendButtonText}>POST</Text>
+      </Button>
+    );
+  }
+
+  renderCommentButton = (key) => {
+    const { firstName, lastName, organization, commentContent } = this.props;
+
+    if (this.props.commenting) {
+      return (
+        <Spinner />
+      );
+    } else if (this.props.commentContent === '') {
+      return;
+    } return (
+      <Button
+        light
+        style={styles.sendButton}
+        onPress={() => this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent)}
+      >
+        <Text style={styles.sendButtonText}>COMMENT</Text>
+      </Button>
+    );
+  }
+
+  renderCommentCount = (key, comments) => {
+    if (comments === 0) {
+      return;
+    } return (
+      <Button
+        transparent
+        onPress={() => this.props.showComments(this.props.organization, key)}
+      >
+        <Text style={{ fontSize: 13 }}>{comments} comments</Text>
       </Button>
     );
   }
@@ -77,7 +114,7 @@ class FeedScreen extends Component {
   }
 
   renderPost = (post) => {
-    const { name, postContent, time, key } = post;
+    const { name, postContent, time, key, comments } = post;
     return (
       <Card style={{ flex: 0 }}>
         <CardItem>
@@ -95,11 +132,24 @@ class FeedScreen extends Component {
             <Text>{postContent}</Text>
           </Body>
         </CardItem>
+        <CardItem>
+            {this.renderCommentCount(key, comments)}
+        </CardItem>
+        <CardItem>
+        <Input
+          onChangeText={this.props.commentChanged.bind(this)}
+          value={this.props.commentContent}
+          style={styles.messageBox}
+          placeholder='Comment here...'
+        />
+        {this.renderCommentButton(key)}
+        </CardItem>
       </Card>
     );
   }
 
   render() {
+    console.log(this.props);
     return (
       <Container>
         <Content>
@@ -147,7 +197,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { postContent, posting, loadingList, feedData, postToDelete } = state.feed;
+  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsLoading, commentBarShown, commentContent } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
   return {
     postContent,
@@ -159,7 +209,11 @@ const mapStateToProps = (state) => {
     rank,
     organization,
     admin,
-    postToDelete
+    postToDelete,
+    comments,
+    commentsLoading,
+    commentBarShown,
+    commentContent
   };
 };
 
@@ -167,5 +221,10 @@ export default connect(mapStateToProps, {
   postChanged,
   sendButtonPressed,
   fetchFeed,
-  deletePost
+  deletePost,
+  showComments,
+  renderCommentInput,
+  hideCommentInput,
+  commentChanged,
+  onCommentButtonPress
 })(FeedScreen);

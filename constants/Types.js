@@ -40,6 +40,11 @@ export const REQUEST_FEED_DATA = 'request_feed_data';
 export const REQUEST_FEED_DATA_SUCCESS = 'request_feed_data_success';
 export const DELETE_POST_ATTEMPTED = 'delete_post_attempted';
 export const DELETE_POST_SUCCESS = 'delete_post_success';
+export const SHOW_COMMENTS_ATTEMPTED = 'show_comments_attempted';
+export const SHOW_COMMENTS_SUCCESS = 'show_comments_success';
+export const COMMENT_CHANGED = 'comment_changed';
+export const COMMENT_ATTEMPTED = 'comment_attempted';
+export const COMMENT_SUCCESS = 'comment_success';
 //SelectedProfileReducer Types
 export const INITIALIZE_TOTALS = 'initialize_totals';
 export const TOGGLE_ADMIN_MODE = 'toggle_admin_mode';
