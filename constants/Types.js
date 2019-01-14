@@ -93,3 +93,11 @@ export const SET_EVENT_TYPE = 'set_event_type';
 export const LOCATION_NAME_CHANGED = 'location_name_changed';
 export const CREATE_EVENT_SUCCESS = 'create_event_success';
 export const CREATE_EVENT_ERROR = 'create_event_error';
+//SettingsReducer Types
+export const FETCH_ADMIN_SETTINGS = 'fetch_admin_settings';
+export const FETCH_ADMIN_SETTINGS_SUCCESS = 'fetch_admin_settings_success';
+export const GENERATE_NEW_CODE_ATTEMPT = 'generate_new_code_attempt';
+export const GENERATE_NEW_CODE_SUCCESS = 'generate_new_code_success';
+export const SAVE_NEW_THRESHOLD_ATTEMPT = 'save_new_threshold_attempt';
+export const SAVE_NEW_THRESHOLD_SUCCESS = 'save_new_threshold_success';
+export const NEW_THRESHOLD_CHANGED = 'new_threshold_changed';

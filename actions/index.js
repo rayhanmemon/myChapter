@@ -5,3 +5,4 @@ export * from './FeedActions';
 export * from './SelectedProfileActions';
 export * from './CreateEventActions';
 export * from './EventsActions';
+export * from './SettingsActions';

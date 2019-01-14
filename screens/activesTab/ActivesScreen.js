@@ -39,9 +39,9 @@ class ActivesScreen extends Component {
         <Button
           transparent
           danger
-          onPress={() => this.props.navigation.navigate('AdminSettings')}
+          onPress={() => this.props.navigation.navigate('Settings')}
         >
-          <Text>Administrator Settings</Text>
+          <Text>Settings</Text>
         </Button>
         <List
           enableEmptySections

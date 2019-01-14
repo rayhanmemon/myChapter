@@ -11,7 +11,8 @@ import CreateEventScreen from '../screens/eventsTab/CreateEventScreen';
 
 import ActivesScreen from '../screens/activesTab/ActivesScreen';
 import ProfileScreen from '../screens/activesTab/ProfileScreen';
-import AdminSettingsScreen from '../screens/activesTab/AdminSettingsScreen';
+import SettingsScreen from '../screens/activesTab/SettingsScreen';
+import EditThresholdScreen from '../screens/activesTab/EditThresholdScreen';
 
 //Feed Tab Navigation Setup
 const FeedStack = createStackNavigator({
@@ -50,7 +51,8 @@ EventsStack.navigationOptions = {
 const ActivesStack = createStackNavigator({
   Actives: ActivesScreen,
   SelectedProfile: ProfileScreen,
-  AdminSettings: AdminSettingsScreen
+  Settings: SettingsScreen,
+  EditThreshold: EditThresholdScreen,
 });
 
 ActivesStack.navigationOptions = {

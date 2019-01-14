@@ -98,8 +98,8 @@ export const regChapter = (organization, email, password, firstName, lastName, r
           .set({ firstName, lastName, position: position || '' });
         firebase.database().ref(`/${organization}/profiles/${rank}`)
           .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
-        firebase.database().ref(`/${organization}/security`)
-          .set({ registrationCode: randomCode });
+        firebase.database().ref(`/${organization}/admin`)
+          .set({ securityCode: randomCode });
         firebase.database().ref('/organizations')
           .push(`${organization}`);
       })
@@ -127,8 +127,8 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
     if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '') {
       dispatch({ type: REGISTRATION_FAIL, payload: 'Please complete all fields' });
     } else {
-      firebase.database().ref(`/${organization}/security/`).on('value', snapshot => {
-        if (snapshot.val().registrationCode === regCode) {
+      firebase.database().ref(`/${organization}/admin/`).on('value', snapshot => {
+        if (snapshot.val().securityCode === regCode) {
           firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
               const user = firebase.auth().currentUser;

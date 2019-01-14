@@ -7,6 +7,7 @@ import FeedReducer from './FeedReducer';
 import EventsReducer from './EventsReducer';
 import SelectedProfileReducer from './SelectedProfileReducer';
 import CreateEventReducer from './CreateEventReducer';
+import SettingsReducer from './SettingsReducer';
 
 export default combineReducers({
   auth: LoginReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   events: EventsReducer,
   createEvent: CreateEventReducer,
   selectedProfile: SelectedProfileReducer,
+  settings: SettingsReducer
 });
