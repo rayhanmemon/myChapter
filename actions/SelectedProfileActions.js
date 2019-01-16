@@ -13,8 +13,24 @@ import {
   EDIT_ADMIN,
   SAVE_NEW_STATS,
   SAVE_NEW_STATS_SUCCESS,
-  SAVE_NEW_STATS_FAILED
+  SAVE_NEW_STATS_FAILED,
+  UPLOAD_IMAGE,
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAILED,
 } from '../constants/Types';
+
+export const uploadImageAttempt = () => {
+  return {
+    type: UPLOAD_IMAGE
+  };
+};
+
+export const uploadImageSuccess = (uri) => {
+  return {
+    type: UPLOAD_IMAGE_SUCCESS,
+    payload: uri
+  };
+};
 
 export const initializeTotals = (organization) => {
   return (dispatch) => {

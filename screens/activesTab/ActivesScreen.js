@@ -22,7 +22,6 @@ class ActivesScreen extends Component {
   }
 
   onActiveSelect = (name, rank) => {
-    console.log(this.props);
     const { admin } = this.props;
     this.props.fetchSelectedProfile(this.props.organization, rank);
     this.props.navigation.navigate('SelectedProfile', { title: name, admin });

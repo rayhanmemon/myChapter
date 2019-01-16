@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
-import { Container, Content, Thumbnail, Form, Item, Input, Label, Button, Text, Picker, Spinner, Icon } from 'native-base';
-import { ImagePicker } from 'expo';
-import * as firebase from 'firebase';
+import { Alert } from 'react-native';
+import { Container, Content, Form, Item, Input, Label, Text, Picker, Spinner, Icon, Image, Button } from 'native-base';
+import { ImagePicker, Permissions } from 'expo';
+import firebase from 'firebase';
 
 import {
   loadProfileStats,
@@ -15,10 +15,42 @@ import {
   brotherhoodsEdited,
   goodStandingEdited,
   adminEdited,
-  saveStats
+  saveStats,
+  uploadImageAttempt,
+  uploadImageSuccess,
 } from '../actions';
 
 class EditStats extends Component {
+
+  /*
+  onChooseImagePress = async () => {
+    const permissions = Permissions.CAMERA_ROLL;
+    const { status } = await Permissions.askAsync(permissions);
+
+    if (status === 'granted') {
+      const result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancel) {
+        this.props.uploadImageAttempt();
+        this.uploadImage(result.uri, 'test-image')
+          .then(() => {
+            Alert.alert('Success!');
+            this.props.uploadImageSuccess(result.uri);
+          })
+          .catch((error) => {
+            Alert.alert(error);
+          });
+      }
+    }
+    return;
+  }
+
+  uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase.storage().ref().child(`${this.props.organization}/profile-pictures/${this.props.rank}.jpg`);
+    ref.put(blob);
+  };
+  */
 
   saveButtonPressed(organization, rank) {
     const newStats = {
@@ -44,7 +76,7 @@ class EditStats extends Component {
         danger
         onPress={() => this.saveButtonPressed(organization, rank)}
       >
-        <Text>SAVE CHANGES</Text>
+        <Text>Save Changes</Text>
       </Button>
     );
   }
@@ -58,99 +90,98 @@ class EditStats extends Component {
     const chaptersInitial = this.props.profile.chapters.toString();
     const mixersInitial = this.props.profile.mixers.toString();
     const brotherhoodsInitial = this.props.profile.brotherhoods.toString();
-
-    const picture = 'https://cdn.images.express.co.uk/img/dynamic/4/590x/LeBron-James-has-until-June-29-to-opt-out-of-his-contract-with-the-Cavaliers-978390.jpg?r=1529715616214';
     const rank = this.props.profile.rank;
+    //const image = this.props.image;
 
     return (
       <Container>
         <Content contentContainerStyle={styles.content}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', }}>
-            <Thumbnail
-              style={styles.picture}
-              source={{ uri: picture }}
-            />
-          </View>
-          <Form style={{ marginTop: 10 }}>
-            <Item picker>
-             <Picker
-               mode="dropdown"
-               style={{ width: undefined }}
-               iosIcon={<Icon name="ios-arrow-down" />}
-               placeholder='Privileges'
-               placeholderStyle={{ color: 'black' }}
-               selectedValue={admin}
-               onValueChange={this.props.adminEdited.bind(this)}
-             >
-               <Picker.Item label="Full Admin" value='true' />
-               <Picker.Item label="No Privileges" value='false' />
-             </Picker>
-            </Item>
-            <Item picker>
-             <Picker
-               mode="dropdown"
-               style={{ width: undefined }}
-               placeholder='Standing'
-               iosIcon={<Icon name="ios-arrow-down" />}
-               placeholderStyle={{ color: 'black' }}
-               selectedValue={goodStanding}
-               onValueChange={this.props.goodStandingEdited.bind(this)}
-             >
-               <Picker.Item label="Good Standing" value='true' />
-               <Picker.Item label="Bad Standing" value='false' />
-             </Picker>
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Position</Label>
-              <Input
-                placeholder={positionInitial}
-                onChangeText={this.props.positionEdited.bind(this)}
-                value={position}
-              />
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Dues</Label>
-              <Input
-                placeholder={duesInitial}
-                onChangeText={this.props.duesEdited.bind(this)}
-                value={dues}
-              />
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Community Service</Label>
-              <Input
-                placeholder={communityServiceInitial}
-                onChangeText={this.props.communityServiceEdited.bind(this)}
-                value={communityService}
-              />
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Chapters</Label>
-              <Input
-                placeholder={chaptersInitial}
-                onChangeText={this.props.chaptersEdited.bind(this)}
-                value={chapters}
-              />
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Mixers</Label>
-              <Input
-                placeholder={mixersInitial}
-                onChangeText={this.props.mixersEdited.bind(this)}
-                value={mixers}
-              />
-            </Item>
-            <Item>
-              <Label style={{ color: 'black' }}>Brotherhoods</Label>
-              <Input
-                placeholder={brotherhoodsInitial}
-                onChangeText={this.props.brotherhoodsEdited.bind(this)}
-                value={brotherhoods}
-              />
-            </Item>
-          </Form>
-          {this.renderButton(rank)}
-        </Content>
+            {/*<Button
+              transparent
+              onPress={() => this.onChooseImagePress()}
+            >
+              <Text>Select New Profile Picture</Text>
+            </Button>*/}
+            <Form>
+              <Item picker>
+               <Picker
+                 mode="dropdown"
+                 style={{ width: undefined }}
+                 iosIcon={<Icon name="ios-arrow-down" />}
+                 placeholder='Privileges'
+                 placeholderStyle={{ color: 'black' }}
+                 selectedValue={admin}
+                 onValueChange={this.props.adminEdited.bind(this)}
+               >
+                 <Picker.Item label="Full Admin" value='true' />
+                 <Picker.Item label="No Privileges" value='false' />
+               </Picker>
+               </Item>
+               <Item picker>
+               <Picker
+                 mode="dropdown"
+                 style={{ width: undefined }}
+                 placeholder='Standing'
+                 iosIcon={<Icon name="ios-arrow-down" />}
+                 placeholderStyle={{ color: 'black' }}
+                 selectedValue={goodStanding}
+                 onValueChange={this.props.goodStandingEdited.bind(this)}
+               >
+                 <Picker.Item label="Good Standing" value='true' />
+                 <Picker.Item label="Bad Standing" value='false' />
+               </Picker>
+               </Item>
+               <Item>
+                <Label style={{ color: 'black' }}>Position</Label>
+                <Input
+                  placeholder={positionInitial}
+                  onChangeText={this.props.positionEdited.bind(this)}
+                  value={position}
+                />
+              </Item>
+              <Item>
+                <Label style={{ color: 'black' }}>Dues</Label>
+                <Input
+                  placeholder={duesInitial}
+                  onChangeText={this.props.duesEdited.bind(this)}
+                  value={dues}
+                />
+              </Item>
+              <Item>
+                <Label style={{ color: 'black' }}>Community Service</Label>
+                <Input
+                  placeholder={communityServiceInitial}
+                  onChangeText={this.props.communityServiceEdited.bind(this)}
+                  value={communityService}
+                />
+              </Item>
+              <Item>
+                <Label style={{ color: 'black' }}>Chapters</Label>
+                <Input
+                  placeholder={chaptersInitial}
+                  onChangeText={this.props.chaptersEdited.bind(this)}
+                  value={chapters}
+                />
+              </Item>
+              <Item>
+                <Label style={{ color: 'black' }}>Mixers</Label>
+                <Input
+                  placeholder={mixersInitial}
+                  onChangeText={this.props.mixersEdited.bind(this)}
+                  value={mixers}
+                />
+              </Item>
+              <Item>
+                <Label style={{ color: 'black' }}>Brotherhoods</Label>
+                <Input
+                  placeholder={brotherhoodsInitial}
+                  onChangeText={this.props.brotherhoodsEdited.bind(this)}
+                  value={brotherhoods}
+                />
+              </Item>
+            </Form>
+            {this.renderButton(rank)}
+          </Content>
       </Container>
     );
   }
@@ -175,11 +206,12 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin } = state.selectedProfile;
-  const { organization } = state.auth;
+  const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin, image } = state.selectedProfile;
+  const { organization, rank } = state.auth;
   return (
     {
       admin,
+      image,
       position,
       dues,
       communityService,
@@ -188,7 +220,8 @@ const mapStateToProps = (state) => {
       brotherhoods,
       organization,
       goodStanding,
-      loading
+      loading,
+      rank
     }
   );
 };
@@ -203,5 +236,7 @@ export default connect(mapStateToProps, {
   brotherhoodsEdited,
   goodStandingEdited,
   adminEdited,
-  saveStats
+  saveStats,
+  uploadImageSuccess,
+  uploadImageAttempt
 })(EditStats);

@@ -77,6 +77,7 @@ export const sendButtonPressed = (postContent, firstName, lastName, rank, organi
 };
 
 export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent) => {
+  console.log(key, commentContent)
   if (commentContent) {
     return (dispatch) => {
       dispatch({ type: COMMENT_ATTEMPTED });
@@ -86,7 +87,7 @@ export const onCommentButtonPress = (organization, firstName, lastName, key, com
         .set({ name, time, commentContent })
         .then(dispatch({ type: COMMENT_SUCCESS }));
     };
-  } return { type: '' }; 
+  } return { type: '' };
 };
 
 export const fetchFeed = (organization) => {

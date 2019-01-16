@@ -46,6 +46,8 @@ export const COMMENT_CHANGED = 'comment_changed';
 export const COMMENT_ATTEMPTED = 'comment_attempted';
 export const COMMENT_SUCCESS = 'comment_success';
 //SelectedProfileReducer Types
+export const UPLOAD_IMAGE = 'upload_image';
+export const UPLOAD_IMAGE_SUCCESS = 'upload_image_success';
 export const INITIALIZE_TOTALS = 'initialize_totals';
 export const TOGGLE_ADMIN_MODE = 'toggle_admin_mode';
 export const EDIT_POSITION = 'edit_position';

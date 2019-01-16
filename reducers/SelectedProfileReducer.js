@@ -11,11 +11,14 @@ import {
   EDIT_ADMIN,
   SAVE_NEW_STATS,
   SAVE_NEW_STATS_SUCCESS,
-  SAVE_NEW_STATS_FAILED
+  SAVE_NEW_STATS_FAILED,
+  UPLOAD_IMAGE,
+  UPLOAD_IMAGE_SUCCESS
 } from '../constants/Types';
 
 const INITIAL_STATE = {
   adminModeActive: false,
+  image: null,
   totalDues: 0,
   totalCommunityService: 0,
   totalChapters: 0,
@@ -30,7 +33,7 @@ const INITIAL_STATE = {
   mixers: '',
   position: '',
   goodStanding: 'true',
-  loading: false
+  loading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -68,6 +71,10 @@ export default (state = INITIAL_STATE, action) => {
       return INITIAL_STATE;
     case SAVE_NEW_STATS_FAILED:
       return { ...state, loading: false };
+    case UPLOAD_IMAGE:
+      return { ...state, loading: true };
+    case UPLOAD_IMAGE_SUCCESS:
+      return { ...state, loading: false, image: action.payload };
     default:
       return state;
   }

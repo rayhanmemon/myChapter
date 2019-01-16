@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Content, List, Card, CardItem, Thumbnail, Body, Text, Left, Right, Button, Input, Spinner } from 'native-base';
+import { Container, Content, List, Card, CardItem, Body, Text, Left, Right, Button, Input, Spinner } from 'native-base';
 
 import {
   postChanged,
@@ -50,7 +50,6 @@ class FeedScreen extends Component {
   }
 
   renderButton = () => {
-    console.log(this.props.commentContent);
     if (this.props.posting) {
       return (
         <Spinner />
@@ -67,7 +66,7 @@ class FeedScreen extends Component {
 
   renderCommentButton = (key) => {
     const { firstName, lastName, organization, commentContent } = this.props;
-
+    console.log(key, commentContent);
     if (this.props.commenting) {
       return (
         <Spinner />
@@ -119,9 +118,11 @@ class FeedScreen extends Component {
       <Card style={{ flex: 0 }}>
         <CardItem>
           <Left>
-            <Thumbnail source={{ uri: 'https://cdn.images.express.co.uk/img/dynamic/4/590x/LeBron-James-has-until-June-29-to-opt-out-of-his-contract-with-the-Cavaliers-978390.jpg?r=1529715616214' }} />
+            {/*
+            <Thumbnail source={{ uri: url }} />
+            */}
             <Body>
-              <Text>{name}</Text>
+              <Text style={{ fontWeight: 'bold' }}>{name}</Text>
               <Text note>{time}</Text>
             </Body>
           </Left>
@@ -138,7 +139,7 @@ class FeedScreen extends Component {
         <CardItem>
         <Input
           onChangeText={this.props.commentChanged.bind(this)}
-          value={this.props.commentContent}
+          value={this.props.postContent}
           style={styles.messageBox}
           placeholder='Comment here...'
         />
@@ -149,7 +150,6 @@ class FeedScreen extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Container>
         <Content>

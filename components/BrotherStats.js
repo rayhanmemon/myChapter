@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { Container, Content, Thumbnail, Text } from 'native-base';
 import Stat from './Stat';
+import firebase from 'firebase';
 
 import { initializeTotals } from '../actions';
 
@@ -22,9 +23,21 @@ class BrotherStats extends Component {
     );
   }
 
+  /*
+  renderImage() {
+    const { organization, rank } = this.props;
+    firebase.storage().ref(`${organization}/profile-pictures/${rank}.jpg`).getDownloadURL()
+    .then((url) => {
+      return <Thumbnail style={styles.picture} source={{ uri: url }} />;
+    })
+    .catch((error) => {
+      Alert.alert(error);
+    });
+  }
+  */
+  
   render() {
     this.props.initializeTotals(this.props.organization);
-    const picture = 'https://cdn.images.express.co.uk/img/dynamic/4/590x/LeBron-James-has-until-June-29-to-opt-out-of-his-contract-with-the-Cavaliers-978390.jpg?r=1529715616214';
     const position = this.props.profile.position;
     const goodStanding = this.props.profile.goodStanding;
     const dues = this.props.profile.dues;
@@ -38,7 +51,7 @@ class BrotherStats extends Component {
     return (
       <Container>
         <Content contentContainerStyle={styles.content}>
-          <Thumbnail style={styles.picture} source={{ uri: picture }} />
+          {/*{this.renderImage()}*/}
           <Text style={styles.position}>{position}</Text>
           {this.renderStanding(goodStanding)}
           <Stat
@@ -110,14 +123,15 @@ const styles = {
 
 const mapStateToProps = (state) => {
   const { totalDues, totalCommunityService, totalChapters, totalMixers, totalBrotherhoods } = state.selectedProfile;
-  const { organization } = state.auth;
+  const { organization, rank } = state.auth;
   return {
     totalDues,
     totalCommunityService,
     totalChapters,
     totalMixers,
     totalBrotherhoods,
-    organization
+    organization,
+    rank
   };
 };
 
