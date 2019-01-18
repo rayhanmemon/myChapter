@@ -98,16 +98,19 @@ class FeedScreen extends Component {
   }
 
   renderFeed = () => {
+    const random = Math.floor((Math.random() * 100) + 1);
+    const listKey = `${random}${this.props.loadingList}`;
     if (this.props.loadingList) {
       return <Spinner />;
     } else if (this.props.error) {
       return (<Text>{this.props.error}</Text>);
     } return (
       <List
+        key={listKey}
         enableEmptySections
         dataArray={this.props.feedData}
         renderRow={this.renderPost}
-        keyExtractor={(post) => post.time}
+        keyExtractor={(post) => post.key}
       />
     );
   }

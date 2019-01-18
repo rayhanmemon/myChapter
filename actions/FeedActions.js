@@ -77,7 +77,6 @@ export const sendButtonPressed = (postContent, firstName, lastName, rank, organi
 };
 
 export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent) => {
-  console.log(key, commentContent)
   if (commentContent) {
     return (dispatch) => {
       dispatch({ type: COMMENT_ATTEMPTED });

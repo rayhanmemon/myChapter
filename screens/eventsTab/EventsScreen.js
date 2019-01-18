@@ -22,7 +22,7 @@ class EventsScreen extends Component {
     },
     headerTintColor: '#fff'
   };
-
+  
   componentWillMount() {
     this.props.fetchEventsList(this.props.organization, this.props.rank);
     this.props.getCurrentLocationAndDate();

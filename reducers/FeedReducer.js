@@ -23,6 +23,7 @@ const INITIAL_STATE = {
   postToDelete: '',
   comments: [],
   commentsLoading: '',
+  messageBoxHeight: 40,
 };
 
 export default (state = INITIAL_STATE, action) => {

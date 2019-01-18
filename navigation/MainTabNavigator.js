@@ -76,6 +76,7 @@ export default createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: 'red',
       inactiveTintColor: 'gray',
-    }
+    },
+    initialRouteName: 'FeedStack',
   }
 );
