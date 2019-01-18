@@ -9,10 +9,9 @@ import {
   fetchFeed,
   deletePost,
   showComments,
-  renderCommentInput,
-  hideCommentInput,
   commentChanged,
-  onCommentButtonPress
+  onCommentButtonPress,
+  selectForCommenting
 } from '../../actions';
 
 class FeedScreen extends Component {
@@ -30,7 +29,9 @@ class FeedScreen extends Component {
 
   onSendButtonPress = () => {
     const { postContent, firstName, lastName, rank, organization } = this.props;
-    this.props.sendButtonPressed(postContent, firstName, lastName, rank, organization);
+    if (postContent) {
+      this.props.sendButtonPressed(postContent, firstName, lastName, rank, organization);
+    }
   }
 
   renderDeletePostButton(key) {
@@ -64,20 +65,24 @@ class FeedScreen extends Component {
     );
   }
 
-  renderCommentButton = (key) => {
-    const { firstName, lastName, organization, commentContent } = this.props;
-    console.log(key, commentContent);
+  handleCommentButtonPress(key, comments) {
+    const commentContent = this.commentContent;
+    const { firstName, lastName, organization } = this.props;
+    if (commentContent) {
+      this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent, comments);
+    }
+  }
+
+  renderCommentButton = (key, comments) => {
     if (this.props.commenting) {
       return (
         <Spinner />
       );
-    } else if (this.props.commentContent === '') {
-      return;
     } return (
       <Button
         light
         style={styles.sendButton}
-        onPress={() => this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent)}
+        onPress={() => this.handleCommentButtonPress(key, comments)}
       >
         <Text style={styles.sendButtonText}>COMMENT</Text>
       </Button>
@@ -88,12 +93,14 @@ class FeedScreen extends Component {
     if (comments === 0) {
       return;
     } return (
-      <Button
-        transparent
-        onPress={() => this.props.showComments(this.props.organization, key)}
-      >
-        <Text style={{ fontSize: 13 }}>{comments} comments</Text>
-      </Button>
+      <CardItem>
+        <Button
+          transparent
+          onPress={() => this.props.showComments(this.props.organization, key)}
+        >
+          <Text style={{ fontSize: 13 }}>{comments} comments</Text>
+        </Button>
+      </CardItem>
     );
   }
 
@@ -112,6 +119,40 @@ class FeedScreen extends Component {
         renderRow={this.renderPost}
         keyExtractor={(post) => post.key}
       />
+    );
+  }
+
+  renderCommentInput = (key, comments) => {
+    if (this.props.selectedForCommenting === key) {
+    return (
+      <View>
+        <CardItem>
+          <Button
+            transparent
+            info
+            onPress={() => this.props.selectForCommenting('')}
+          >
+            <Text>Cancel</Text>
+          </Button>
+        </CardItem>
+        <CardItem>
+          <Input
+            onChangeText={(text) => this.commentContent = text}
+            style={styles.messageBox}
+            placeholder='comment here...'
+          />
+          {this.renderCommentButton(key, comments)}
+        </CardItem>
+      </View>
+      );
+    } return (
+      <Button
+        transparent
+        info
+        onPress={() => this.props.selectForCommenting(key)}
+      >
+        <Text>Leave Comment</Text>
+      </Button>
     );
   }
 
@@ -136,18 +177,8 @@ class FeedScreen extends Component {
             <Text>{postContent}</Text>
           </Body>
         </CardItem>
-        <CardItem>
-            {this.renderCommentCount(key, comments)}
-        </CardItem>
-        <CardItem>
-        <Input
-          onChangeText={this.props.commentChanged.bind(this)}
-          value={this.props.postContent}
-          style={styles.messageBox}
-          placeholder='Comment here...'
-        />
-        {this.renderCommentButton(key)}
-        </CardItem>
+        {this.renderCommentCount(key, comments)}
+        {this.renderCommentInput(key, comments)}
       </Card>
     );
   }
@@ -161,6 +192,7 @@ class FeedScreen extends Component {
               onChangeText={this.props.postChanged.bind(this)}
               value={this.props.postContent}
               style={styles.messageBox}
+              multiline
             />
             {this.renderButton()}
           </View>
@@ -200,8 +232,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsLoading, commentBarShown, commentContent } = state.feed;
+  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsLoading, commentContent, selectedForCommenting } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
+  console.log(commentContent);
   return {
     postContent,
     posting,
@@ -215,8 +248,8 @@ const mapStateToProps = (state) => {
     postToDelete,
     comments,
     commentsLoading,
-    commentBarShown,
-    commentContent
+    commentContent,
+    selectedForCommenting
   };
 };
 
@@ -226,8 +259,7 @@ export default connect(mapStateToProps, {
   fetchFeed,
   deletePost,
   showComments,
-  renderCommentInput,
-  hideCommentInput,
   commentChanged,
-  onCommentButtonPress
+  onCommentButtonPress,
+  selectForCommenting
 })(FeedScreen);

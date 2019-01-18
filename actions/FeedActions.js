@@ -12,10 +12,10 @@ import {
   DELETE_POST_SUCCESS,
   SHOW_COMMENTS_ATTEMPTED,
   SHOW_COMMENTS_SUCCESS,
-  RENDER_COMMENT_INPUT,
-  HIDE_COMMENT_INPUT,
   COMMENT_ATTEMPTED,
-  COMMENT_SUCCESS
+  COMMENT_SUCCESS,
+  SELECT_FOR_COMMENTING,
+  CANCEL_COMMENTING
 } from '../constants/Types';
 
 export const postChanged = (text) => {
@@ -25,19 +25,22 @@ export const postChanged = (text) => {
   };
 };
 
+export const selectForCommenting = (key) => {
+  if (key) {
+    return {
+      type: SELECT_FOR_COMMENTING,
+      payload: key
+    };
+  } return {
+    type: CANCEL_COMMENTING
+  };
+};
+
 export const commentChanged = (text) => {
   return {
     type: COMMENT_CHANGED,
     payload: text
   };
-};
-
-export const renderCommentInput = (key) => {
-  return ({ type: RENDER_COMMENT_INPUT, payload: key });
-};
-
-export const hideCommentInput = () => {
-  return { type: HIDE_COMMENT_INPUT };
 };
 
 export const showComments = (organization, key) => {
@@ -57,36 +60,41 @@ export const showComments = (organization, key) => {
 export const deletePost = (organization, key) => {
   return (dispatch) => {
     dispatch({ type: DELETE_POST_ATTEMPTED, payload: key });
-    firebase.database().ref(`${organization}/posts/${key}`).remove();
-    dispatch({ type: DELETE_POST_SUCCESS });
+    firebase.database().ref(`${organization}/posts/${key}`).remove()
+    .then(() => {
+      firebase.database().ref(`${organization}/comments/${key}`).remove()
+      .then(() => {
+        dispatch({ type: DELETE_POST_SUCCESS });
+      });
+    });
   };
 };
 
 export const sendButtonPressed = (postContent, firstName, lastName, rank, organization) => {
-  if (postContent) {
-    return (dispatch) => {
-      dispatch({ type: SEND_BUTTON_PRESSED });
-      const name = `${firstName} ${lastName}`;
-      const time = new Date().toLocaleString();
-      const comments = 0;
-      firebase.database().ref(`${organization}/posts`)
-        .push({ name, rank, time, comments, postContent })
-        .then(dispatch({ type: POST_SUCCESS }));
-    };
-  } return { type: '' };
+  return (dispatch) => {
+    dispatch({ type: SEND_BUTTON_PRESSED });
+    const name = `${firstName} ${lastName}`;
+    const time = new Date().toLocaleString();
+    const comments = 0;
+    firebase.database().ref(`${organization}/posts`)
+      .push({ name, rank, time, comments, postContent })
+      .then(dispatch({ type: POST_SUCCESS }));
+  };
 };
 
-export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent) => {
-  if (commentContent) {
-    return (dispatch) => {
-      dispatch({ type: COMMENT_ATTEMPTED });
-      const name = `${firstName} ${lastName}`;
-      const time = new Date().toLocaleString();
-      firebase.database().ref(`${organization}/comments/${key}`)
-        .set({ name, time, commentContent })
-        .then(dispatch({ type: COMMENT_SUCCESS }));
-    };
-  } return { type: '' };
+export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent, comments) => {
+  return (dispatch) => {
+    dispatch({ type: COMMENT_ATTEMPTED });
+    const name = `${firstName} ${lastName}`;
+    const time = new Date().toLocaleString();
+    firebase.database().ref(`${organization}/comments/${key}`)
+      .push({ name, time, commentContent })
+      .then(() => {
+        firebase.database().ref(`${organization}/posts/${key}/comments`)
+        .set(comments + 1);
+      })
+      .then(dispatch({ type: COMMENT_SUCCESS }));
+  };
 };
 
 export const fetchFeed = (organization) => {

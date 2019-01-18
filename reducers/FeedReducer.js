@@ -8,9 +8,11 @@ import {
   DELETE_POST_SUCCESS,
   SHOW_COMMENTS_ATTEMPTED,
   SHOW_COMMENTS_SUCCESS,
-  RENDER_COMMENT_INPUT,
-  HIDE_COMMENT_INPUT,
   COMMENT_CHANGED,
+  SELECT_FOR_COMMENTING,
+  COMMENT_ATTEMPTED,
+  COMMENT_SUCCESS,
+  CANCEL_COMMENTING
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -24,10 +26,17 @@ const INITIAL_STATE = {
   comments: [],
   commentsLoading: '',
   messageBoxHeight: 40,
+  selectedForCommenting: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case CANCEL_COMMENTING:
+      return { ...state, commentContent: '', selectedForCommenting: '' };
+    case COMMENT_ATTEMPTED:
+      return { ...state, commenting: true };
+    case COMMENT_SUCCESS:
+      return { ...state, commenting: false, commentContent: '' };
     case POST_CHANGED:
       return { ...state, postContent: action.payload };
     case COMMENT_CHANGED:
@@ -48,6 +57,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, commentsLoading: action.payload };
     case SHOW_COMMENTS_SUCCESS:
       return { ...state, commentsLoading: '', comments: action.payload };
+    case SELECT_FOR_COMMENTING:
+      return { ...state, selectedForCommenting: action.payload };
     default:
       return { state };
   }

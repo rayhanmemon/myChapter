@@ -45,8 +45,8 @@ export const SHOW_COMMENTS_SUCCESS = 'show_comments_success';
 export const COMMENT_CHANGED = 'comment_changed';
 export const COMMENT_ATTEMPTED = 'comment_attempted';
 export const COMMENT_SUCCESS = 'comment_success';
-export const REFRESH_STARTED = 'refresh_started';
-export const REFRESH_FINISHED = 'refresh_finished';
+export const SELECT_FOR_COMMENTING = 'select_for_commenting';
+export const CANCEL_COMMENTING = 'cancel_commenting';
 //SelectedProfileReducer Types
 export const UPLOAD_IMAGE = 'upload_image';
 export const UPLOAD_IMAGE_SUCCESS = 'upload_image_success';
