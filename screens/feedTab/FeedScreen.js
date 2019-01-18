@@ -11,7 +11,8 @@ import {
   showComments,
   commentChanged,
   onCommentButtonPress,
-  selectForCommenting
+  selectForCommenting,
+  hideComments
 } from '../../actions';
 
 class FeedScreen extends Component {
@@ -90,18 +91,19 @@ class FeedScreen extends Component {
   }
 
   renderCommentCount = (key, comments) => {
-    if (comments === 0) {
-      return;
-    } return (
-      <CardItem>
-        <Button
-          transparent
-          onPress={() => this.props.showComments(this.props.organization, key)}
-        >
-          <Text style={{ fontSize: 13 }}>{comments} comments</Text>
-        </Button>
-      </CardItem>
-    );
+    if (!this.props.commentsShown) {
+      if (comments === 0) {
+        return;
+      } return (
+          <Button
+            transparent
+            info
+            onPress={() => this.props.showComments(this.props.organization, key)}
+          >
+            <Text style={{ fontSize: 13 }}>{comments} comments</Text>
+          </Button>
+      );
+    }
   }
 
   renderFeed = () => {
@@ -122,18 +124,56 @@ class FeedScreen extends Component {
     );
   }
 
+  renderCommentRow = (comment) => {
+    return (
+      <CardItem>
+        <Left>
+          <Body>
+            <Text style={{ fontWeight: 'bold', fontSize: 13 }}>{comment.name}</Text>
+            <Text note style={{ fontSize: 12, marginBottom: 2 }}>{comment.time}</Text>
+            <Text style={{ fontSize: 12 }}>{comment.commentContent}</Text>
+          </Body>
+        </Left>
+      </CardItem>
+    );
+  }
+
+  renderComments = (key) => {
+    console.log(this.props.commentsShown);
+    if (this.props.commentsShown === key) {
+      return (
+        <View>
+          <Button
+            transparent
+            info
+            onPress={() => this.props.hideComments()}
+          >
+           <Text style={{ fontSize: 13 }}>Hide Comments</Text>
+          </Button>
+          <List
+            enableEmptySections
+            dataArray={this.props.comments}
+            renderRow={this.renderCommentRow}
+          />
+        </View>
+      );
+    }
+  };
+
   renderCommentInput = (key, comments) => {
     if (this.props.selectedForCommenting === key) {
     return (
       <View>
+        {this.renderComments(key)}
         <CardItem>
           <Button
             transparent
             info
             onPress={() => this.props.selectForCommenting('')}
           >
-            <Text>Cancel</Text>
+            <Text style={{ fontSize: 13 }}>Cancel</Text>
           </Button>
+          {this.renderCommentCount(key, comments)}
         </CardItem>
         <CardItem>
           <Input
@@ -146,13 +186,19 @@ class FeedScreen extends Component {
       </View>
       );
     } return (
-      <Button
-        transparent
-        info
-        onPress={() => this.props.selectForCommenting(key)}
-      >
-        <Text>Leave Comment</Text>
-      </Button>
+      <View>
+        {this.renderComments(key)}
+        <CardItem>
+          <Button
+            transparent
+            info
+            onPress={() => this.props.selectForCommenting(key)}
+          >
+            <Text style={{ fontSize: 13 }}>Leave Comment</Text>
+          </Button>
+          {this.renderCommentCount(key, comments)}
+        </CardItem>
+      </View>
     );
   }
 
@@ -177,7 +223,6 @@ class FeedScreen extends Component {
             <Text>{postContent}</Text>
           </Body>
         </CardItem>
-        {this.renderCommentCount(key, comments)}
         {this.renderCommentInput(key, comments)}
       </Card>
     );
@@ -232,7 +277,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsLoading, commentContent, selectedForCommenting } = state.feed;
+  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsShown, commentContent, selectedForCommenting } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
   console.log(commentContent);
   return {
@@ -247,7 +292,7 @@ const mapStateToProps = (state) => {
     admin,
     postToDelete,
     comments,
-    commentsLoading,
+    commentsShown,
     commentContent,
     selectedForCommenting
   };
@@ -261,5 +306,6 @@ export default connect(mapStateToProps, {
   showComments,
   commentChanged,
   onCommentButtonPress,
-  selectForCommenting
+  selectForCommenting,
+  hideComments
 })(FeedScreen);

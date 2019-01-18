@@ -12,7 +12,8 @@ import {
   SELECT_FOR_COMMENTING,
   COMMENT_ATTEMPTED,
   COMMENT_SUCCESS,
-  CANCEL_COMMENTING
+  CANCEL_COMMENTING,
+  HIDE_COMMENTS
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -24,13 +25,15 @@ const INITIAL_STATE = {
   feedData: [],
   postToDelete: '',
   comments: [],
-  commentsLoading: '',
+  commentsShown: '',
   messageBoxHeight: 40,
   selectedForCommenting: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case HIDE_COMMENTS:
+      return { ...state, commentsShown: '' };
     case CANCEL_COMMENTING:
       return { ...state, commentContent: '', selectedForCommenting: '' };
     case COMMENT_ATTEMPTED:
@@ -54,9 +57,9 @@ export default (state = INITIAL_STATE, action) => {
     case DELETE_POST_SUCCESS:
       return { ...state, postToDelete: '' };
     case SHOW_COMMENTS_ATTEMPTED:
-      return { ...state, commentsLoading: action.payload };
+      return { ...state, commentsShown: action.payload };
     case SHOW_COMMENTS_SUCCESS:
-      return { ...state, commentsLoading: '', comments: action.payload };
+      return { ...state, comments: action.payload };
     case SELECT_FOR_COMMENTING:
       return { ...state, selectedForCommenting: action.payload };
     default:

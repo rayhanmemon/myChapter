@@ -15,8 +15,13 @@ import {
   COMMENT_ATTEMPTED,
   COMMENT_SUCCESS,
   SELECT_FOR_COMMENTING,
-  CANCEL_COMMENTING
+  CANCEL_COMMENTING,
+  HIDE_COMMENTS
 } from '../constants/Types';
+
+export const hideComments = () => {
+  return { type: HIDE_COMMENTS };
+};
 
 export const postChanged = (text) => {
   return {
@@ -48,10 +53,9 @@ export const showComments = (organization, key) => {
     dispatch({ type: SHOW_COMMENTS_ATTEMPTED, payload: key });
     firebase.database().ref(`${organization}/comments/${key}`)
     .on('value', snapshot => {
-      const array = _.map(snapshot.val(), (val, commentKey) => {
+      const comments = _.map(snapshot.val(), (val, commentKey) => {
         return { ...val, commentKey };
       });
-      const comments = array.reverse();
       dispatch({ type: SHOW_COMMENTS_SUCCESS, payload: comments });
     });
   };
