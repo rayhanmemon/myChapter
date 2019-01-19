@@ -81,8 +81,29 @@ class EditStats extends Component {
     );
   }
 
+  renderAdminPicker() {
+    if (!(this.props.rank === this.props.profile.rank)) {
+      return (
+        <Item picker>
+         <Picker
+           mode="dropdown"
+           style={{ width: undefined }}
+           iosIcon={<Icon name="ios-arrow-down" />}
+           placeholder='Privileges'
+           placeholderStyle={{ color: 'black' }}
+           selectedValue={this.props.admin}
+           onValueChange={this.props.adminEdited.bind(this)}
+         >
+           <Picker.Item label="Full Admin" value='true' />
+           <Picker.Item label="No Privileges" value='false' />
+         </Picker>
+        </Item>
+      );
+    } return;
+  }
+
   render() {
-    const { admin, position, goodStanding, dues, communityService, chapters, mixers, brotherhoods } = this.props;
+    const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods } = this.props;
 
     const positionInitial = this.props.profile.position;
     const duesInitial = this.props.profile.dues.toString();
@@ -103,20 +124,7 @@ class EditStats extends Component {
               <Text>Select New Profile Picture</Text>
             </Button>*/}
             <Form>
-              <Item picker>
-               <Picker
-                 mode="dropdown"
-                 style={{ width: undefined }}
-                 iosIcon={<Icon name="ios-arrow-down" />}
-                 placeholder='Privileges'
-                 placeholderStyle={{ color: 'black' }}
-                 selectedValue={admin}
-                 onValueChange={this.props.adminEdited.bind(this)}
-               >
-                 <Picker.Item label="Full Admin" value='true' />
-                 <Picker.Item label="No Privileges" value='false' />
-               </Picker>
-               </Item>
+              {this.renderAdminPicker()}
                <Item picker>
                <Picker
                  mode="dropdown"

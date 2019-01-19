@@ -12,8 +12,8 @@ import {
 } from '../constants/Types';
 
 const INITIAL_STATE = {
-  email: 'rayhanmemon@gmail.com',
-  password: 'Rayzen96',
+  email: '',
+  password: '',
   uid: '',
   //profile data
   admin: false,
