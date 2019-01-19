@@ -67,6 +67,7 @@ class ProfileScreen extends Component {
       goodStanding: this.props.selectedGoodStanding,
       rank: this.props.selectedRank,
     };
+    console.log(profile);
     if (this.props.adminModeActive) {
       return <EditStats profile={profile} />;
     }

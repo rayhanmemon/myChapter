@@ -99,7 +99,7 @@ export const regChapter = (organization, email, password, firstName, lastName, r
         firebase.database().ref(`/${organization}/profiles/${rank}`)
           .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
         firebase.database().ref(`/${organization}/admin`)
-          .set({ securityCode: randomCode });
+          .set({ securityCode: randomCode, totalBrotherhoods: 5, totalChapters: 5, totalCommunityService: 10, totalDues: 100, totalMixers: 5, });
         firebase.database().ref('/organizations')
           .push(`${organization}`);
       })
@@ -135,9 +135,9 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
               firebase.database().ref(`/users/${user.uid}`)
                 .set({ organization, rank });
               firebase.database().ref(`/${organization}/activesList/${rank}`)
-                .set({ firstName, lastName, position: position || '' });
+                .set({ firstName, lastName, position: position || 'No Position' });
               firebase.database().ref(`/${organization}/profiles/${rank}`)
-                .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
+                .set({ firstName, lastName, rank, position: position || 'No Position', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
             })
             .then(() => {
               dispatch({ type: REGISTRATION_SUCCESS });

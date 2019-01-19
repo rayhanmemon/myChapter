@@ -25,7 +25,7 @@ export default class Stat extends Component {
 
   render() {
     const { type, title, current, total, unit, completionText } = this.props;
-    const progress = current / total;
+    const progress = current / total || 0.01;
 
     switch (type) {
       case 'bar':

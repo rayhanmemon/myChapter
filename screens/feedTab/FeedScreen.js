@@ -129,9 +129,9 @@ class FeedScreen extends Component {
       <CardItem>
         <Left>
           <Body>
-            <Text style={{ fontWeight: 'bold', fontSize: 13 }}>{comment.name}</Text>
-            <Text note style={{ fontSize: 12, marginBottom: 2 }}>{comment.time}</Text>
-            <Text style={{ fontSize: 12 }}>{comment.commentContent}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 14.5 }}>{comment.name}</Text>
+            <Text note style={{ fontSize: 13, marginBottom: 3 }}>{comment.time}</Text>
+            <Text style={{ fontSize: 14 }}>{comment.commentContent}</Text>
           </Body>
         </Left>
       </CardItem>

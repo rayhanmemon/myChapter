@@ -35,7 +35,7 @@ class BrotherStats extends Component {
     });
   }
   */
-  
+
   render() {
     this.props.initializeTotals(this.props.organization);
     const position = this.props.profile.position;
