@@ -10,6 +10,12 @@ class LoginScreen extends Component {
     title: 'Sign In',
   };
 
+  componentWillMount() {
+    if (this.props.loggedIn) {
+      this.props.navigation.navigate('Main');
+    }
+  }
+
   shouldComponentUpdate(nextProps) {
     if (nextProps.loggedIn) {
       this.props.resetAuthState();

@@ -1,13 +1,12 @@
 import React from 'react';
 import firebase from 'firebase';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import ReduxThunk from 'redux-thunk';
-import { Platform, StatusBar, View } from 'react-native';
+import { Platform, StatusBar, View, ActivityIndicator } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
+import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigator from './navigation/AppNavigator';
 
-import reducers from './reducers';
+import { store, persistor } from './Store';
 
 export default class App extends React.Component {
 
@@ -52,9 +51,15 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 
-  render() {
-    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+  renderLoading() {
+    return (
+      <View>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
+  render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -67,10 +72,12 @@ export default class App extends React.Component {
 
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
+        <PersistGate persistor={persistor} loading={this.renderLoading()}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+          </View>
+        </PersistGate>
       </Provider>
     );
   }
