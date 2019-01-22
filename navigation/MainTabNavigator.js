@@ -73,10 +73,11 @@ export default createBottomTabNavigator(
     EventsStack,
   },
   {
+    lazy: false,
     tabBarOptions: {
       activeTintColor: 'red',
       inactiveTintColor: 'gray',
     },
     initialRouteName: 'FeedStack',
-  }
+  },
 );

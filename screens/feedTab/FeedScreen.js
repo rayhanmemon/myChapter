@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, List, Card, CardItem, Body, Text, Left, Right, Button, Input, Spinner } from 'native-base';
+import { Notifications, Permissions } from 'expo';
+import firebase from 'firebase';
 
 import {
   postChanged,
@@ -17,15 +19,22 @@ import {
 
 class FeedScreen extends Component {
   static navigationOptions = {
-    title: 'Announcements',
-    headerStyle: {
-      backgroundColor: '#ff0000',
-    },
-    headerTintColor: '#fff'
-  };
+      title: 'Announcements',
+      headerStyle: {
+        backgroundColor: '#ff0000',
+      },
+      headerTintColor: '#fff',
+    };
 
-  componentWillMount() {
-    this.props.fetchFeed(this.props.organization);
+  componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
+    this.registerForPushNotifications();
+  }
+
+  componentWillUnmount() {
+    if (this.willFocusSubscription) {
+      this.willFocusSubscription.remove();
+    }
   }
 
   onSendButtonPress = () => {
@@ -35,20 +44,42 @@ class FeedScreen extends Component {
     }
   }
 
-  renderDeletePostButton(key) {
-    if (this.props.postToDelete === key) {
-      return <Spinner />;
-    } else if (this.props.admin) {
-      return (
-        <Button
-          transparent
-          danger
-          onPress={() => this.props.deletePost(this.props.organization, key)}
-        >
-          <Text style={{ fontSize: 12 }}>Delete</Text>
-        </Button>
-      );
-    } return;
+  willFocus = (payload) => {
+    this.props.fetchFeed(this.props.organization);
+  }
+
+  registerForPushNotifications = async () => {
+    const { organization, rank } = this.props;
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+  let finalStatus = existingStatus;
+
+  // only ask if permissions have not already been determined, because
+  // iOS won't necessarily prompt the user a second time.
+  if (existingStatus !== 'granted') {
+    // Android remote notification permissions are granted during the app
+    // install, so this will only ask on iOS
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+  }
+
+  // Stop here if the user did not grant permissions
+  if (finalStatus !== 'granted') {
+    return;
+  }
+
+  // Get the token that uniquely identifies this device
+  const token = await Notifications.getExpoPushTokenAsync();
+  firebase.database().ref(`${organization}/profiles/${rank}/pushToken`).set(token);
+}
+
+  handleCommentButtonPress(key, comments) {
+    const commentContent = this.commentContent;
+    const { firstName, lastName, organization } = this.props;
+    if (commentContent) {
+      this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent, comments);
+    }
   }
 
   renderButton = () => {
@@ -66,12 +97,20 @@ class FeedScreen extends Component {
     );
   }
 
-  handleCommentButtonPress(key, comments) {
-    const commentContent = this.commentContent;
-    const { firstName, lastName, organization } = this.props;
-    if (commentContent) {
-      this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent, comments);
-    }
+  renderDeletePostButton = (key) => {
+    if (this.props.postToDelete === key) {
+      return <Spinner />;
+    } else if (this.props.admin) {
+      return (
+        <Button
+          transparent
+          danger
+          onPress={() => this.props.deletePost(this.props.organization, key)}
+        >
+          <Text style={{ fontSize: 12 }}>Delete</Text>
+        </Button>
+      );
+    } return;
   }
 
   renderCommentButton = (key, comments) => {
@@ -139,7 +178,6 @@ class FeedScreen extends Component {
   }
 
   renderComments = (key) => {
-    console.log(this.props.commentsShown);
     if (this.props.commentsShown === key) {
       return (
         <View>
@@ -229,6 +267,7 @@ class FeedScreen extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <Container>
         <Content>
@@ -279,7 +318,6 @@ const styles = {
 const mapStateToProps = (state) => {
   const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsShown, commentContent, selectedForCommenting } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
-  console.log(commentContent);
   return {
     postContent,
     posting,

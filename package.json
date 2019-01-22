@@ -12,6 +12,7 @@
     "expo": "^31.0.2",
     "lodash": "^4.17.11",
     "native-base": "^2.10.0",
+    "node-fetch": "^2.3.0",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
@@ -26,6 +27,8 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
+    "eslint": "^5.12.1",
+    "eslint-plugin-promise": "^4.0.1",
     "firebase": "^5.7.2",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
