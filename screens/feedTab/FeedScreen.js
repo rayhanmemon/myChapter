@@ -44,7 +44,7 @@ class FeedScreen extends Component {
     }
   }
 
-  willFocus = (payload) => {
+  willFocus = () => {
     this.props.fetchFeed(this.props.organization);
   }
 

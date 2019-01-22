@@ -17,7 +17,17 @@ class SettingsScreen extends Component {
     headerTintColor: '#fff'
   };
 
-  componentWillMount() {
+  componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
+  }
+
+  componentWillUnmount() {
+    if (this.willFocusSubscription) {
+      this.willFocusSubscription.remove();
+    }
+  }
+
+  willFocus = () => {
     this.props.fetchAdminSettings(this.props.organization);
   }
 

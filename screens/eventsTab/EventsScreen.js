@@ -23,10 +23,20 @@ class EventsScreen extends Component {
     headerTintColor: '#fff'
   };
 
-  componentWillMount() {
-    this.props.fetchEventsList(this.props.organization, this.props.rank);
-    this.props.getCurrentLocationAndDate();
-  }
+    componentDidMount() {
+      this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
+    }
+
+    componentWillUnmount() {
+      if (this.willFocusSubscription) {
+        this.willFocusSubscription.remove();
+      }
+    }
+
+    willFocus = () => {
+      this.props.fetchEventsList(this.props.organization, this.props.rank);
+      this.props.getCurrentLocationAndDate();
+    }
 
   jsCoreDateCreator(dateString) {
     // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS"
