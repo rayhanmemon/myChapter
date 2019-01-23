@@ -11,7 +11,8 @@ exports.sendPushNotification = functions.database.ref('Omicron-Pi')
   const root = event.data.ref.root;
   let messages = [];
 
-  root.child('Omicron-Pi/profiles').once('value').then((snapshot) => {
+  root.child('Omicron-Pi/profiles').once('value')
+  .then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
       let pushToken = childSnapshot.val().pushToken;
         if (pushToken) {
@@ -22,8 +23,9 @@ exports.sendPushNotification = functions.database.ref('Omicron-Pi')
         }
     })
     return Promise.all(messages);
-  }).then(messages => {
-    return fetch('https://exp.host/--/api/v2/push/send', {
+  })
+  .then(messages => {
+    fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -53,8 +53,13 @@ class EditStats extends Component {
   */
 
   saveButtonPressed(organization, rank) {
+    let admin = (this.props.admin === 'true');
+    if ((this.props.rank === this.props.profile.rank) && (this.props.userIsAdmin)) {
+      admin = true;
+    }
+
     const newStats = {
-      admin: (this.props.admin === 'true'),
+      admin,
       position: this.props.position,
       goodStanding: (this.props.goodStanding === 'true'),
       dues: parseInt(this.props.dues, 10),
@@ -215,7 +220,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
   const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin, image } = state.selectedProfile;
-  const { organization, rank } = state.auth;
+  const { organization, rank, admin: userIsAdmin } = state.auth;
   return (
     {
       admin,
@@ -229,7 +234,8 @@ const mapStateToProps = (state) => {
       organization,
       goodStanding,
       loading,
-      rank
+      rank,
+      userIsAdmin
     }
   );
 };
