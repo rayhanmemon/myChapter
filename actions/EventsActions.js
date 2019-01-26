@@ -35,9 +35,10 @@ export const fetchEventsList = (organization, rank) => {
     dispatch({ type: REQUEST_EVENTS_LIST_DATA });
     firebase.database().ref(`${organization}/events`)
     .on('value', snapshot => {
-      const eventsList = _.map(snapshot.val(), (val, eventKey) => {
+      const array = _.map(snapshot.val(), (val, eventKey) => {
         return { ...val, eventKey };
       });
+      const eventsList = array.reverse();
       dispatch({ type: REQUEST_EVENTS_LIST_DATA_SUCCESS, payload: eventsList });
     });
 
