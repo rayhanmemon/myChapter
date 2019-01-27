@@ -27,6 +27,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "3",
       "bundleIdentifier": "com.myChapter.myChapter"
     }
   }

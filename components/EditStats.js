@@ -21,7 +21,6 @@ import {
 } from '../actions';
 
 class EditStats extends Component {
-
   /*
   onChooseImagePress = async () => {
     const permissions = Permissions.CAMERA_ROLL;

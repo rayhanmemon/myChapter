@@ -65,6 +65,7 @@ export const SAVE_NEW_STATS_SUCCESS = 'save_new_stats_success';
 export const SAVE_NEW_STATS_FAILED = 'save_new_stats_failed';
 export const EDIT_GOOD_STANDING = 'edit_good_standing';
 export const EDIT_ADMIN = 'edit_admin';
+export const SET_INITIAL_VALUES = 'set_initial_values';
 //EventsReducer Types
 export const REQUEST_EVENTS_LIST_DATA = 'request_events_list_data';
 export const REQUEST_EVENTS_LIST_DATA_SUCCESS = 'request_events_list_data_success';

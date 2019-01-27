@@ -17,7 +17,15 @@ import {
   UPLOAD_IMAGE,
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILED,
+  SET_INITIAL_VALUES
 } from '../constants/Types';
+
+export const setInitialValues = (initialStats) => {
+  return {
+    type: SET_INITIAL_VALUES,
+    payload: initialStats
+  };
+};
 
 export const uploadImageAttempt = () => {
   return {

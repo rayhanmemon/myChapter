@@ -28,7 +28,7 @@ class SettingsScreen extends Component {
     }
   }
 
-  willFocus = () => {
+  willFocus() {
     this.props.fetchAdminSettings(this.props.organization);
   }
 

@@ -13,7 +13,8 @@ import {
   SAVE_NEW_STATS_SUCCESS,
   SAVE_NEW_STATS_FAILED,
   UPLOAD_IMAGE,
-  UPLOAD_IMAGE_SUCCESS
+  UPLOAD_IMAGE_SUCCESS,
+  SET_INITIAL_VALUES
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -38,6 +39,16 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SET_INITIAL_VALUES:
+      return {
+        ...state,
+        brotherhooods: action.payload.brotherhoodsInitial,
+        chapters: action.payload.chaptersInitial,
+        communityService: action.payload.communityServiceInitial,
+        dues: action.payload.duesInitial,
+        mixers: action.payload.mixersInitial,
+        position: action.payload.positionInitial
+      };
     case INITIALIZE_TOTALS:
       return {
         ...state,
