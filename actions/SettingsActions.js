@@ -8,8 +8,22 @@ import {
   GENERATE_NEW_CODE_SUCCESS,
   NEW_THRESHOLD_CHANGED,
   SAVE_NEW_THRESHOLD_ATTEMPT,
-  SAVE_NEW_THRESHOLD_SUCCESS
+  SAVE_NEW_THRESHOLD_SUCCESS,
+  LOGOUT_USER,
+  LOGOUT_USER_FAILED
 } from '../constants/Types';
+
+export const logout = () => {
+  return (dispatch) => {
+    firebase.auth().signOut()
+    .then(() => {
+      dispatch({ type: LOGOUT_USER });
+    })
+    .catch((error) => {
+      dispatch({ type: LOGOUT_USER_FAILED, payload: error });
+    });
+  };
+};
 
 export const fetchAdminSettings = (organization) => {
   return (dispatch) => {

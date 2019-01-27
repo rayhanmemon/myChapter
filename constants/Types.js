@@ -9,6 +9,7 @@ export const FETCH_USERS_STATS = 'fetch_users_stats';
 export const FETCH_USERS_STATS_SUCCESS = 'fetch_user_stats_success';
 export const FETCH_ORG_AND_RANK = 'fetch_org_and_rank';
 export const FETCH_ORG_AND_RANK_SUCCESS = 'fetch_org_and_rank_success';
+export const LOGOUT_USER = 'logout_user';
 //RegReducer Types
 export const REG_CHAPTER_CHANGED = 'reg_chapter_changed';
 export const REG_CODE_CHANGED = 'reg_code_changed';
@@ -106,3 +107,4 @@ export const GENERATE_NEW_CODE_SUCCESS = 'generate_new_code_success';
 export const SAVE_NEW_THRESHOLD_ATTEMPT = 'save_new_threshold_attempt';
 export const SAVE_NEW_THRESHOLD_SUCCESS = 'save_new_threshold_success';
 export const NEW_THRESHOLD_CHANGED = 'new_threshold_changed';
+export const LOGOUT_USER_FAILED = 'logout_user_failed';

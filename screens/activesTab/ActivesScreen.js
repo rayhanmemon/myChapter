@@ -32,33 +32,22 @@ class ActivesScreen extends Component {
       return <Spinner />;
     } else if (this.props.error) {
       return (<Text>{this.props.error}</Text>);
-    } else if (this.props.admin) {
-      return (
-      <Content>
-        <Button
-          transparent
-          danger
-          onPress={() => this.props.navigation.navigate('Settings')}
-        >
-          <Text>Settings</Text>
-        </Button>
-        <List
-          enableEmptySections
-          dataArray={this.props.listData}
-          renderRow={this.renderRow}
-          keyExtractor={(active) => active.rank}
-        />
-      </Content>
-      );
     } return (
-      <Content>
-        <List
-          enableEmptySections
-          dataArray={this.props.listData}
-          renderRow={this.renderRow}
-          keyExtractor={(active) => active.rank}
-        />
-      </Content>
+    <Content>
+      <Button
+        transparent
+        danger
+        onPress={() => this.props.navigation.navigate('Settings')}
+      >
+        <Text>Settings</Text>
+      </Button>
+      <List
+        enableEmptySections
+        dataArray={this.props.listData}
+        renderRow={this.renderRow}
+        keyExtractor={(active) => active.rank}
+      />
+    </Content>
     );
   }
 

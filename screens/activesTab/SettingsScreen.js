@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Container, Content, Spinner, View } from 'native-base';
+import { Container, Content, Spinner, View, Text } from 'native-base';
 import SettingsList from 'react-native-settings-list';
 
 import {
   fetchAdminSettings,
+  logout
 } from '../../actions';
 
 class SettingsScreen extends Component {
@@ -37,7 +38,19 @@ class SettingsScreen extends Component {
     } if (admin) {
         return (
         <SettingsList>
-         <SettingsList.Header headerText='Statistics Thresholds' headerStyle={{ color: 'black', fontWeight: 'bold' }} />
+         <SettingsList.Header headerText='Administrator Settings' headerStyle={{ color: 'black', fontSize: 20, fontWeight: 'bold' }} />
+         <SettingsList.Header headerText='Security Code' headerStyle={{ color: 'black', fontWeight: 'bold', marginTop: 20 }} />
+         <SettingsList.Item
+           title={`${this.props.securityCode}`}
+           backgroundColor='white'
+           titleStyle={{ color: 'red' }}
+           onPress={() => this.props.navigation.navigate('EditThreshold', {
+             title: 'Change Security Code',
+             value: 'securityCode',
+             currentValue: this.props.securityCode,
+           })}
+         />
+         <SettingsList.Header headerText='Stat Thresholds' headerStyle={{ color: 'black', fontWeight: 'bold', marginTop: 20 }} />
          <SettingsList.Item
            title={`Total Dues (${this.props.totalDues} dollars)`}
            backgroundColor='white'
@@ -88,20 +101,26 @@ class SettingsScreen extends Component {
                currentValue: this.props.totalBrotherhoods,
              })}
            />
-          <SettingsList.Header headerText='SecurityCode' headerStyle={{ color: 'black', fontWeight: 'bold', marginTop: 30 }} />
-          <SettingsList.Item
-            title={`${this.props.securityCode}`}
-            backgroundColor='white'
-            titleStyle={{ color: 'red' }}
-            onPress={() => this.props.navigation.navigate('EditThreshold', {
-              title: 'Change Security Code',
-              value: 'securityCode',
-              currentValue: this.props.securityCode,
-            })}
-          />
         </SettingsList>
       );
     } return;
+  }
+
+  renderUserSettings() {
+    if (!this.props.rank) {
+      this.props.navigation.navigate('Login');
+    }
+    return (
+      <SettingsList>
+       <SettingsList.Header headerText='User Settings' headerStyle={{ color: 'black', fontSize: 20, fontWeight: 'bold', marginTop: 30 }} />
+       <SettingsList.Item
+         title='Logout'
+         backgroundColor='white'
+         titleStyle={{ color: 'red' }}
+         onPress={() => this.props.logout()}
+       />
+      </SettingsList>
+    );
   }
 
   render() {
@@ -110,7 +129,11 @@ class SettingsScreen extends Component {
         <Content>
           <View style={{ backgroundColor: 'white', flex: 1 }}>
             <View style={{ flex: 1, marginTop: 50 }}>
+              <Text style={{ fontColor: 'red', fontSize: 10 }}>
+                {this.props.errorMessage}
+              </Text>
               {this.renderAdminSettings(this.props.admin)}
+              {this.renderUserSettings()}
             </View>
           </View>
         </Content>
@@ -129,6 +152,7 @@ const mapStateToProps = (state) => {
     totalCommunityService,
     totalDues,
     totalMixers,
+    errorMessage
   } = state.settings;
 
   return ({
@@ -143,10 +167,12 @@ const mapStateToProps = (state) => {
     totalChapters,
     totalCommunityService,
     totalDues,
-    totalMixers
+    totalMixers,
+    errorMessage
   });
 };
 
 export default connect(mapStateToProps, {
   fetchAdminSettings,
+  logout
 })(SettingsScreen);

@@ -9,6 +9,7 @@ import {
   FETCH_ORG_AND_RANK_SUCCESS,
   FETCH_USERS_STATS,
   FETCH_USERS_STATS_SUCCESS,
+  LOGOUT_USER
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -38,6 +39,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case LOGOUT_USER:
+      return { INITIAL_STATE };
     case EMAIL_CHANGED:
       return { ...state, email: action.payload };
     case PASSWORD_CHANGED:

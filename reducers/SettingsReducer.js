@@ -5,7 +5,8 @@ import {
   GENERATE_NEW_CODE_SUCCESS,
   SAVE_NEW_THRESHOLD_ATTEMPT,
   SAVE_NEW_THRESHOLD_SUCCESS,
-  NEW_THRESHOLD_CHANGED
+  NEW_THRESHOLD_CHANGED,
+  LOGOUT_USER_FAILED
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -18,10 +19,13 @@ const INITIAL_STATE = {
   totalMixers: 0,
   saving: false,
   newThreshold: '',
+  errorMessage: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case LOGOUT_USER_FAILED:
+      return { ...state, errorMessage: 'Error When Logging Out' };
     case FETCH_ADMIN_SETTINGS:
       return { ...state, loadingAdminSettings: true };
     case FETCH_ADMIN_SETTINGS_SUCCESS:
