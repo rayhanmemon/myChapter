@@ -19,6 +19,7 @@ class SettingsScreen extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
   }
 

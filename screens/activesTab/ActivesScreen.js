@@ -21,13 +21,13 @@ class ActivesScreen extends Component {
     this.props.fetchActivesList(this.props.organization);
   }
 
-  onActiveSelect = (name, rank) => {
+  onActiveSelect(name, rank) {
     const { admin } = this.props;
     this.props.fetchSelectedProfile(this.props.organization, rank);
     this.props.navigation.navigate('SelectedProfile', { title: name, admin });
   }
 
-  renderActivesList = () => {
+  renderActivesList() {
     if (this.props.loadingList) {
       return <Spinner />;
     } else if (this.props.error) {
@@ -52,6 +52,10 @@ class ActivesScreen extends Component {
   }
 
   renderRow = (active) => {
+    let position = active.position;
+    if (active.position === 'No Position') {
+      position = '';
+    }
     const name = `${active.firstName} ${active.lastName}`;
     return (
       <ListItem
@@ -60,7 +64,7 @@ class ActivesScreen extends Component {
       >
         <Body>
           <Text>{name}</Text>
-          <Text style={{ fontSize: 14, fontStyle: 'italic', opacity: 0.7 }}>{active.position}</Text>
+          <Text style={{ fontSize: 14, fontStyle: 'italic', opacity: 0.7 }}>{position}</Text>
         </Body>
         <Right>
           <Text>{active.rank}</Text>
