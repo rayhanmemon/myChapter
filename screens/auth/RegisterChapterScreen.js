@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner } from 'native-base';
 
 import {
@@ -11,7 +12,9 @@ import {
   regRankChanged,
   regPositionChanged,
   regChapter,
-  resetRegisterState
+  resetRegisterState,
+  cancelLoadingReg,
+  orgNameTaken
 } from '../../actions';
 
 class RegisterChapterScreen extends Component {
@@ -19,27 +22,40 @@ class RegisterChapterScreen extends Component {
     title: 'Register a Chapter',
   };
 
+  componentWillMount() {
+    this.props.cancelLoadingReg();
+  }
+
   shouldComponentUpdate(nextProps) {
     if (nextProps.registerSuccess) {
       nextProps.resetRegisterState();
       nextProps.navigation.navigate('Login');
-      console.log('worked');
       return false;
     } return true;
   }
 
-  onButtonPress = () => {
+  onButtonPress() {
     const { organization, email, password, firstName, lastName, rank, position } = this.props;
-    this.props.regChapter(organization, email, password, firstName, lastName, rank, position);
+    firebase.database().ref('/organizations').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        if (childSnapshot.val() === organization) {
+          const duplicateOrg = true;
+        }
+      });
+    });
+    if (duplicateOrg) {
+      this.props.regChapter(organization, email, password, firstName, lastName, rank, position);
+    }
   }
-  renderError = () => {
+
+  renderError() {
     if (this.props.error) {
       return (
         <Text style={styles.error}>{this.props.error}</Text>
       );
     }
   }
-  renderButton = () => {
+  renderButton() {
     if (this.props.loading) {
       return (
         <Spinner />
@@ -169,5 +185,7 @@ export default connect(mapStateToProps, {
   regRankChanged,
   regPositionChanged,
   regChapter,
-  resetRegisterState
+  resetRegisterState,
+  cancelLoadingReg,
+  orgNameTaken
 })(RegisterChapterScreen);

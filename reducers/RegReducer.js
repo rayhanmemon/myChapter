@@ -12,6 +12,7 @@ import {
   REGISTRATION_FAIL,
   WRONG_REG_CODE,
   RESET_REGISTER_STATE,
+  CANCEL_LOADING_REG
 } from '../constants/Types.js';
 
 const INITIAL_STATE = {
@@ -30,6 +31,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case CANCEL_LOADING_REG:
+      return { ...state, loading: false };
     case REG_CHAPTER_CHANGED:
       return { ...state, organization: action.payload };
     case REG_CODE_CHANGED:

@@ -267,7 +267,6 @@ class FeedScreen extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Container>
         <Content>

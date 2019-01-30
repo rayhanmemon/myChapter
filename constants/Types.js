@@ -24,6 +24,7 @@ export const REGISTRATION_SUCCESS = 'registration_success';
 export const REGISTRATION_FAIL = 'registration_fail';
 export const WRONG_REG_CODE = 'wrong_reg_code';
 export const RESET_REGISTER_STATE = 'reset_register_state';
+export const CANCEL_LOADING_REG = 'cancel_loading_reg';
 //ActivesReducer Types
 export const REQUEST_LIST_DATA = 'request_list_data';
 export const REQUEST_LIST_DATA_SUCCESS = 'request_list_data_success';

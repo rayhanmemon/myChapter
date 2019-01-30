@@ -19,17 +19,6 @@ class SettingsScreen extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
-  }
-
-  componentWillUnmount() {
-    if (this.willFocusSubscription) {
-      this.willFocusSubscription.remove();
-    }
-  }
-
-  willFocus() {
     this.props.fetchAdminSettings(this.props.organization);
   }
 
@@ -125,6 +114,7 @@ class SettingsScreen extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <Container>
         <Content>

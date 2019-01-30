@@ -24,24 +24,28 @@ class LoginScreen extends Component {
     } return true;
   }
 
-  onEmailChange = (text) => {
+  onEmailChange(text) {
     this.props.emailChanged(text);
   }
-  onPasswordChange = (text) => {
+  
+  onPasswordChange(text) {
     this.props.passwordChanged(text);
   }
-  onSignInButtonPress = () => {
+
+  onSignInButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
   }
-  renderError = () => {
+
+  renderError() {
     if (this.props.error) {
       return (
         <Text style={styles.error}>{this.props.error}</Text>
       );
     } return;
   }
-  renderSignInButton = () => {
+
+  renderSignInButton() {
     if (this.props.loadingSignIn) {
       return <Spinner color='red' />;
     } else if (this.props.loadingOrgAndRank) {

@@ -12,8 +12,22 @@ import {
   REGISTRATION,
   REGISTRATION_SUCCESS,
   REGISTRATION_FAIL,
-  RESET_REGISTER_STATE
+  RESET_REGISTER_STATE,
+  CANCEL_LOADING_REG
 } from '../constants/Types.js';
+
+export const orgNameTaken = () => {
+  return {
+    type: REGISTRATION_FAIL,
+    payload: 'Organization Name Taken'
+  };
+};
+
+export const cancelLoadingReg = () => {
+  return {
+    type: CANCEL_LOADING_REG
+  };
+};
 
 export const resetRegisterState = () => {
   return {
@@ -107,8 +121,8 @@ export const regChapter = (organization, email, password, firstName, lastName, r
         dispatch({ type: REGISTRATION_SUCCESS });
       })
       .catch(() => {
-        dispatch({ type: REGISTRATION_FAIL });
-      });
+        dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again.' });
+    });
   };
 };
 

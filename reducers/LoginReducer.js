@@ -17,24 +17,24 @@ const INITIAL_STATE = {
   password: '',
   uid: '',
   //profile data
-  admin: false,
+  admin: true,
   brotherhoods: 0,
   chapters: 0,
   communityService: 0,
   dues: 0,
-  firstName: '',
-  lastName: '',
+  firstName: 'Rayhan',
+  lastName: 'Memon',
   mixers: 0,
-  position: '',
-  organization: '',
-  rank: '',
+  position: 'Grand Master of Ceremonies',
+  organization: 'Omicron-Pi',
+  rank: '202',
   goodStanding: true,
   //end of profile info
   loadingSignIn: false,
   loadingOrgAndRank: false,
   loadingUserProfile: false,
   error: '',
-  loggedIn: false
+  loggedIn: true
 };
 
 export default (state = INITIAL_STATE, action) => {

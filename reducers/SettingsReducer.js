@@ -40,15 +40,15 @@ export default (state = INITIAL_STATE, action) => {
         totalMixers: action.payload.totalMixers
       };
     case GENERATE_NEW_CODE_ATTEMPT:
-      return { saving: true };
+      return { ...state, saving: true };
     case GENERATE_NEW_CODE_SUCCESS:
-      return { saving: false, securityCode: action.payload };
+      return { ...state, saving: false, securityCode: action.payload };
     case SAVE_NEW_THRESHOLD_ATTEMPT:
-      return { saving: true };
+      return { ...state, saving: true };
     case SAVE_NEW_THRESHOLD_SUCCESS:
-      return { saving: false };
+      return { ...state, saving: false };
     case NEW_THRESHOLD_CHANGED:
-      return { newThreshold: action.payload };
+      return { ...state, newThreshold: action.payload };
     default:
       return state;
   }

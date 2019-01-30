@@ -15,6 +15,14 @@ class EditThresholdScreen extends Component {
     };
   };
 
+  handleSaveButtonPress(value, newThreshold) {
+    if (value === 'securityCode') {
+      this.props.generateSecurityCode(this.props.organization);
+    } else {
+      this.props.saveNewThreshold(this.props.organization, value, newThreshold);
+    }
+  }
+
   renderSaveButton(value, newThreshold) {
     if (this.props.saving) {
       return <Spinner />;
@@ -23,7 +31,7 @@ class EditThresholdScreen extends Component {
         <Button
           danger
           full
-          onPress={() => this.props.generateSecurityCode(this.props.organization)}
+          onPress={() => this.handleSaveButtonPress(value)}
         >
           <Text>Generate New Security Code</Text>
         </Button>
@@ -32,7 +40,7 @@ class EditThresholdScreen extends Component {
       <Button
         danger
         full
-        onPress={() => this.props.saveNewThreshold(this.props.organization, value, newThreshold)}
+        onPress={() => this.handleSaveButtonPress(value, newThreshold)}
       >
         <Text>Save New Threshold</Text>
       </Button>
