@@ -10,9 +10,9 @@ import {
   REGISTRATION,
   REGISTRATION_SUCCESS,
   REGISTRATION_FAIL,
-  WRONG_REG_CODE,
   RESET_REGISTER_STATE,
-  CANCEL_LOADING_REG
+  FETCH_ORGANIZATIONS,
+  FETCH_ORGANIZATIONS_SUCCESS,
 } from '../constants/Types.js';
 
 const INITIAL_STATE = {
@@ -26,15 +26,20 @@ const INITIAL_STATE = {
   position: '',
   loading: false,
   error: '',
-  registerSuccess: false
+  registerSuccess: false,
+  organizationList: '',
+  loadingOrgList: false,
+  errorLoadingOrgList: false
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case CANCEL_LOADING_REG:
-      return { ...state, loading: false };
+    case FETCH_ORGANIZATIONS:
+      return { ...state, loadingOrgList: true };
+    case FETCH_ORGANIZATIONS_SUCCESS:
+      return { ...state, organizationList: action.payload, loadingOrgList: false };
     case REG_CHAPTER_CHANGED:
-      return { ...state, organization: action.payload };
+      return { ...state, organization: action.payload, errorLoadingOrgList: true };
     case REG_CODE_CHANGED:
       return { ...state, regCode: action.payload };
     case REG_EMAIL_CHANGED:

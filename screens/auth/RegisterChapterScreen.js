@@ -13,7 +13,6 @@ import {
   regPositionChanged,
   regChapter,
   resetRegisterState,
-  cancelLoadingReg,
   orgNameTaken
 } from '../../actions';
 
@@ -23,7 +22,7 @@ class RegisterChapterScreen extends Component {
   };
 
   componentWillMount() {
-    this.props.cancelLoadingReg();
+    this.props.resetRegisterState();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -186,6 +185,5 @@ export default connect(mapStateToProps, {
   regPositionChanged,
   regChapter,
   resetRegisterState,
-  cancelLoadingReg,
   orgNameTaken
 })(RegisterChapterScreen);

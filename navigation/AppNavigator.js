@@ -4,11 +4,13 @@ import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterChapterScreen from '../screens/auth/RegisterChapterScreen';
 import JoinChapterScreen from '../screens/auth/JoinChapterScreen';
+import SelectOrganizationScreen from '../screens/auth/SelectOrganizationScreen';
 
 const AuthStack = createStackNavigator(
   {
     Login: LoginScreen,
     RegChapter: RegisterChapterScreen,
+    SelectOrg: SelectOrganizationScreen,
     joinChapter: JoinChapterScreen
   },
   {
@@ -24,6 +26,6 @@ export default createSwitchNavigator(
     Main: MainTabNavigator
   },
   {
-    initialRouteName: 'Main'
+    initialRouteName: 'Auth'
   }
 );

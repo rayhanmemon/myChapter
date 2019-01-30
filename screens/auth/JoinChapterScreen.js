@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-
+import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner } from 'native-base';
+import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner, Picker, Icon } from 'native-base';
 
 import {
   regChapterChanged,
@@ -21,6 +21,10 @@ class RegisterChapterScreen extends Component {
     title: 'Join a Chapter',
   };
 
+  componentWillMount() {
+    this.props.resetRegisterState();
+  }
+
   shouldComponentUpdate(nextProps) {
     if (nextProps.registerSuccess) {
       nextProps.resetRegisterState();
@@ -30,18 +34,20 @@ class RegisterChapterScreen extends Component {
     } return true;
   }
 
-  onButtonPress = () => {
+  onButtonPress() {
     const { organization, regCode, email, password, firstName, lastName, rank, position } = this.props;
     this.props.regUser(organization, regCode, email, password, firstName, lastName, rank, position);
   }
-  renderError = () => {
+
+  renderError() {
     if (this.props.error) {
       return (
         <Text style={styles.error}>{this.props.error}</Text>
       );
     }
   }
-  renderButton = () => {
+
+  renderButton() {
     if (this.props.loading) {
       return (
         <Spinner />
@@ -58,22 +64,30 @@ class RegisterChapterScreen extends Component {
     );
   }
 
+  renderOrganizationPicker() {
+    const { organization } = this.props;
+    const buttonText = organization || 'Select Organization';
+
+    return (
+      <Button
+        transparent
+        onPress={() => this.props.navigation.navigate('SelectOrg')}
+      >
+        <Text>{buttonText}</Text>
+      </Button>
+    );
+  }
+
   render() {
-    const { organization, regCode, email, password, firstName, lastName, rank, position } = this.props;
+    const { regCode, email, password, firstName, lastName, rank, position } = this.props;
 
     return (
       <Container>
         <Content>
           <Card style={{ marginBottom: 10 }}>
-            <Text style={styles.cardTitle}>Chapter Name</Text>
+            <Text style={styles.cardTitle}>Chapter</Text>
             <Form>
-              <Item>
-                <Input
-                  placeholder="e.g Omicron-Pi"
-                  onChangeText={this.props.regChapterChanged.bind(this)}
-                  value={organization}
-                />
-              </Item>
+                {this.renderOrganizationPicker()}
               <Text style={styles.cardTitle}>Registration Code</Text>
               <Text style={styles.cardSubText}>provided by chapter admin</Text>
               <Item>

@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import _ from 'lodash';
 
 import {
   REG_CHAPTER_CHANGED,
@@ -13,19 +14,27 @@ import {
   REGISTRATION_SUCCESS,
   REGISTRATION_FAIL,
   RESET_REGISTER_STATE,
-  CANCEL_LOADING_REG
+  FETCH_ORGANIZATIONS,
+  FETCH_ORGANIZATIONS_SUCCESS,
+  FETCH_ORGANIZATIONS_FAILED
 } from '../constants/Types.js';
+
+export const fetchOrganizationList = () => {
+  return (dispatch) => {
+    dispatch({ type: FETCH_ORGANIZATIONS });
+    firebase.database().ref('organizations')
+    .on('value', snapshot => {
+      console.log(snapshot.val());
+      const organizationList = _.values(snapshot.val());
+      dispatch({ type: FETCH_ORGANIZATIONS_SUCCESS, payload: organizationList });
+    });
+  };
+};
 
 export const orgNameTaken = () => {
   return {
     type: REGISTRATION_FAIL,
     payload: 'Organization Name Taken'
-  };
-};
-
-export const cancelLoadingReg = () => {
-  return {
-    type: CANCEL_LOADING_REG
   };
 };
 
@@ -101,28 +110,32 @@ export const regChapter = (organization, email, password, firstName, lastName, r
   const admin = true;
   const randomCode = `${organization}-${(Math.floor(Math.random() * 10000) + 99999).toString()}`;
 
+  const isRankIncorrect = isNaN(rank);
+
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        const user = firebase.auth().currentUser;
-        firebase.database().ref(`/users/${user.uid}`)
-          .set({ organization, rank });
-        firebase.database().ref(`/${organization}/activesList/${rank}`)
-          .set({ firstName, lastName, position: position || '' });
-        firebase.database().ref(`/${organization}/profiles/${rank}`)
-          .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
-        firebase.database().ref(`/${organization}/admin`)
-          .set({ securityCode: randomCode, totalBrotherhoods: 5, totalChapters: 5, totalCommunityService: 10, totalDues: 100, totalMixers: 5, });
-        firebase.database().ref('/organizations')
-          .push(`${organization}`);
-      })
-      .then(() => {
-        dispatch({ type: REGISTRATION_SUCCESS });
-      })
-      .catch(() => {
-        dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again.' });
-    });
+    if (!isRankIncorrect) {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          const user = firebase.auth().currentUser;
+          firebase.database().ref(`/users/${user.uid}`)
+            .set({ organization, rank });
+          firebase.database().ref(`/${organization}/activesList/${rank}`)
+            .set({ firstName, lastName, position: position || '' });
+          firebase.database().ref(`/${organization}/profiles/${rank}`)
+            .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
+          firebase.database().ref(`/${organization}/admin`)
+            .set({ securityCode: randomCode, totalBrotherhoods: 5, totalChapters: 5, totalCommunityService: 10, totalDues: 100, totalMixers: 5, });
+          firebase.database().ref('/organizations')
+            .push(`${organization}`);
+        })
+        .then(() => {
+          dispatch({ type: REGISTRATION_SUCCESS });
+        })
+        .catch(() => {
+          dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again' });
+      });
+    } dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
   };
 };
 
@@ -135,11 +148,15 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
   const brotherhoods = 0;
   const admin = false;
 
+  const isRankIncorrect = isNaN(rank);
+
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
 
-    if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '') {
+    if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '' || organization === '' || regCode === '') {
       dispatch({ type: REGISTRATION_FAIL, payload: 'Please complete all fields' });
+    } else if (isRankIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
     } else {
       firebase.database().ref(`/${organization}/admin/`).on('value', snapshot => {
         if (snapshot.val().securityCode === regCode) {
@@ -157,7 +174,7 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
               dispatch({ type: REGISTRATION_SUCCESS });
             })
             .catch(() => {
-              dispatch({ type: REGISTRATION_FAIL, payload: 'Registration failed' });
+              dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again' });
             });
         } else {
           dispatch({ type: REGISTRATION_FAIL, payload: 'Incorrect registration code' });
