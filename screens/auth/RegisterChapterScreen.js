@@ -13,6 +13,7 @@ import {
   regPositionChanged,
   regChapter,
   resetRegisterState,
+  fetchOrganizationList,
   orgNameTaken
 } from '../../actions';
 
@@ -23,6 +24,7 @@ class RegisterChapterScreen extends Component {
 
   componentWillMount() {
     this.props.resetRegisterState();
+    this.props.fetchOrganizationList();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -34,15 +36,17 @@ class RegisterChapterScreen extends Component {
   }
 
   onButtonPress() {
-    const { organization, email, password, firstName, lastName, rank, position } = this.props;
-    firebase.database().ref('/organizations').once('value', (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.val() === organization) {
-          const duplicateOrg = true;
-        }
-      });
-    });
-    if (duplicateOrg) {
+    const { organizationList, organization, email, password, firstName, lastName, rank, position } = this.props;
+    let i = 0;
+    let isTaken = false;
+    for (i = 0; i < organizationList.length; i++) {
+      if (organization === organizationList[i]) {
+        isTaken = true;
+      }
+    }
+    if (isTaken) {
+      this.props.orgNameTaken();
+    } else {
       this.props.regChapter(organization, email, password, firstName, lastName, rank, position);
     }
   }
@@ -169,9 +173,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { organization, email, password, firstName, lastName, rank, position, loading, error, registerSuccess } = state.register;
+  const { organization, organizationList, email, password, firstName, lastName, rank, position, loading, error, registerSuccess } = state.register;
   return (
-    { organization, email, password, firstName, lastName, rank, position, loading, error, registerSuccess }
+    { organization, organizationList, email, password, firstName, lastName, rank, position, loading, error, registerSuccess }
   );
 };
 
@@ -185,5 +189,6 @@ export default connect(mapStateToProps, {
   regPositionChanged,
   regChapter,
   resetRegisterState,
+  fetchOrganizationList,
   orgNameTaken
 })(RegisterChapterScreen);
