@@ -121,6 +121,7 @@ export const saveStats = (organization, rank, newStats) => {
   const { admin, position, goodStanding, dues, communityService, chapters, mixers, brotherhoods } = newStats;
   return (dispatch) => {
     dispatch({ type: SAVE_NEW_STATS });
+    setTimeout(() => { dispatch({ type: SAVE_NEW_STATS_FAILED }); }, 5000);
     const profileRef = firebase.database().ref(`${organization}/profiles/${rank}`);
     //update position
     if (position !== '') {

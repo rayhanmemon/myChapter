@@ -97,10 +97,10 @@ class FeedScreen extends Component {
     );
   }
 
-  renderDeletePostButton = (key) => {
+  renderDeletePostButton = (key, rank) => {
     if (this.props.postToDelete === key) {
       return <Spinner />;
-    } else if (this.props.admin) {
+    } else if (this.props.admin || (this.props.rank === rank)) {
       return (
         <Button
           transparent
@@ -241,7 +241,7 @@ class FeedScreen extends Component {
   }
 
   renderPost = (post) => {
-    const { name, postContent, time, key, comments } = post;
+    const { name, postContent, time, key, comments, rank } = post;
     return (
       <Card style={{ flex: 0 }}>
         <CardItem>
@@ -254,7 +254,7 @@ class FeedScreen extends Component {
               <Text note>{time}</Text>
             </Body>
           </Left>
-          {this.renderDeletePostButton(key)}
+          {this.renderDeletePostButton(key, rank)}
         </CardItem>
         <CardItem>
           <Body>
