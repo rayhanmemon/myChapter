@@ -42,7 +42,7 @@ class ActivesScreen extends Component {
         <Text>Settings</Text>
       </Button>
       <List
-        enableEmptySections
+        removeClippedSubviews={false}
         dataArray={this.props.listData}
         renderRow={this.renderRow}
         keyExtractor={(active) => active.rank}

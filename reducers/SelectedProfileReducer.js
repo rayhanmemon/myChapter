@@ -14,7 +14,8 @@ import {
   SAVE_NEW_STATS_FAILED,
   UPLOAD_IMAGE,
   UPLOAD_IMAGE_SUCCESS,
-  SET_INITIAL_VALUES
+  SET_INITIAL_VALUES,
+  INITIALIZE_STANDING_AND_PRIVELEGES
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -33,12 +34,16 @@ const INITIAL_STATE = {
   lastName: '',
   mixers: '',
   position: '',
-  goodStanding: 'true',
+  goodStanding: '',
+  admin: '',
   loading: false,
+  error: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case INITIALIZE_STANDING_AND_PRIVELEGES:
+      return { ...state, admin: action.payload.adminInitial, goodStanding: action.payload.standingInitial };
     case SET_INITIAL_VALUES:
       return {
         ...state,
@@ -81,7 +86,7 @@ export default (state = INITIAL_STATE, action) => {
     case SAVE_NEW_STATS_SUCCESS:
       return INITIAL_STATE;
     case SAVE_NEW_STATS_FAILED:
-      return { ...state, loading: false };
+      return { ...state, loading: false, error: 'Timeout Error. Please Try Again.' };
     case UPLOAD_IMAGE:
       return { ...state, loading: true };
     case UPLOAD_IMAGE_SUCCESS:

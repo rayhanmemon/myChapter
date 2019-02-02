@@ -155,7 +155,7 @@ class FeedScreen extends Component {
     } return (
       <List
         key={listKey}
-        enableEmptySections
+        removeClippedSubviews={false}
         dataArray={this.props.feedData}
         renderRow={this.renderPost}
         keyExtractor={(post) => post.key}
@@ -269,7 +269,7 @@ class FeedScreen extends Component {
   render() {
     return (
       <Container>
-        <Content>
+        <Content style={styles.contentContainer}>
           <View style={styles.messageBoxContainer}>
             <Input
               onChangeText={this.props.postChanged.bind(this)}
@@ -287,6 +287,9 @@ class FeedScreen extends Component {
 }
 
 const styles = {
+  contentContainer: {
+    backgroundColor: '#eeeeee'
+  },
   messageBoxContainer: {
     flexDirection: 'row',
     alignItems: 'center',

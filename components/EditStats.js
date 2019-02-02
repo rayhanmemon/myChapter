@@ -18,6 +18,7 @@ import {
   saveStats,
   uploadImageAttempt,
   uploadImageSuccess,
+  initializeStandingAndPriveleges
 } from '../actions';
 
 class EditStats extends Component {
@@ -50,6 +51,11 @@ class EditStats extends Component {
     ref.put(blob);
   };
   */
+  componentDidMount() {
+    const adminInitial = this.props.profile.admin.toString();
+    const standingInitial = this.props.profile.goodStanding.toString();
+    this.props.initializeStandingAndPriveleges(adminInitial, standingInitial);
+  }
 
   saveButtonPressed(organization, rank) {
     let admin = (this.props.admin === 'true');
@@ -68,6 +74,15 @@ class EditStats extends Component {
       brotherhoods: parseInt(this.props.brotherhoods, 10)
     };
     this.props.saveStats(organization, rank, newStats);
+  }
+
+  renderError() {
+    const { error } = this.props;
+    if (error) {
+      return (
+        <Text style={styles.error}>{error}</Text>
+      );
+    } return;
   }
 
   renderButton(rank) {
@@ -192,6 +207,7 @@ class EditStats extends Component {
                 />
               </Item>
             </Form>
+            {this.renderError()}
             {this.renderButton(rank)}
           </Content>
       </Container>
@@ -214,11 +230,18 @@ const styles = {
   positionAndStanding: {
     flex: 1,
     flexDirection: 'row',
+  },
+  error: {
+    fontSize: 15,
+    color: '#EA2027',
+    marginBottom: 15,
+    marginTop: 15,
+    textAlign: 'center'
   }
 };
 
 const mapStateToProps = (state) => {
-  const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin, image } = state.selectedProfile;
+  const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin, image, error } = state.selectedProfile;
   const { organization, rank, admin: userIsAdmin } = state.auth;
   return (
     {
@@ -234,7 +257,8 @@ const mapStateToProps = (state) => {
       goodStanding,
       loading,
       rank,
-      userIsAdmin
+      userIsAdmin,
+      error
     }
   );
 };
@@ -251,5 +275,6 @@ export default connect(mapStateToProps, {
   adminEdited,
   saveStats,
   uploadImageSuccess,
-  uploadImageAttempt
+  uploadImageAttempt,
+  initializeStandingAndPriveleges
 })(EditStats);

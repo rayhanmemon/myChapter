@@ -12,6 +12,7 @@ import {
   COLLAPSE_SELECTED_EVENT,
   GET_CURRENT_DATE_AND_TIME_SUCCESS,
   DELETE_EVENT_ATTEMPT,
+  REFRESH_EVENTS_SCREEN,
   DELETE_EVENT_SUCCESS
 } from '../constants/Types';
 
@@ -26,10 +27,13 @@ const INITIAL_STATE = {
   currentLongitude: 0,
   currentDate: '',
   eventToDelete: '',
+  refreshKey: 1
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case REFRESH_EVENTS_SCREEN:
+      return { ...state, refreshKey: action.payload, currentLatitude: 0, currentLongitude: 0 };
     case REQUEST_EVENTS_LIST_DATA:
       return { ...state, loadingList: true };
     case REQUEST_EVENTS_LIST_DATA_SUCCESS:

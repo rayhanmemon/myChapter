@@ -68,6 +68,7 @@ export const SAVE_NEW_STATS_FAILED = 'save_new_stats_failed';
 export const EDIT_GOOD_STANDING = 'edit_good_standing';
 export const EDIT_ADMIN = 'edit_admin';
 export const SET_INITIAL_VALUES = 'set_initial_values';
+export const INITIALIZE_STANDING_AND_PRIVELEGES = 'initialize_standing_and_priveleges';
 //EventsReducer Types
 export const REQUEST_EVENTS_LIST_DATA = 'request_events_list_data';
 export const REQUEST_EVENTS_LIST_DATA_SUCCESS = 'request_events_list_data_success';
@@ -83,6 +84,7 @@ export const COLLAPSE_SELECTED_EVENT = 'collapse_selected_event';
 export const GET_CURRENT_DATE_AND_TIME_SUCCESS = 'get_current_date_and_time_success';
 export const DELETE_EVENT_ATTEMPT = 'delete_event_attempt';
 export const DELETE_EVENT_SUCCESS = 'delete_event_success';
+export const REFRESH_EVENTS_SCREEN = 'refresh_events_screen';
 //CreateEventReducer Types
 export const CREATE_EVENT_ATTEMPT = 'create_event_attempt';
 export const SHOW_DATE_PICKER = 'show_date_picker';

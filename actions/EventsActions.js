@@ -14,6 +14,7 @@ import {
   CHECK_IN_SUCCESS,
   EXPAND_SELECTED_EVENT,
   COLLAPSE_SELECTED_EVENT,
+  REFRESH_EVENTS_SCREEN,
   DELETE_EVENT_ATTEMPT,
   DELETE_EVENT_SUCCESS
 } from '../constants/Types';
@@ -27,6 +28,14 @@ export const deleteEvent = (organization, eventKey, attendees) => {
     }
       firebase.database().ref(`${organization}/events/${eventKey}`).remove();
       dispatch({ type: DELETE_EVENT_SUCCESS });
+  };
+};
+
+export const refreshEventScreen = (refreshKey) => {
+  const newKey = refreshKey + 1;
+  return {
+    type: REFRESH_EVENTS_SCREEN,
+    payload: newKey
   };
 };
 
@@ -77,13 +86,15 @@ export const checkInAttempt = (firstName, lastName, organization, rank, eventKey
   const name = `${firstName} ${lastName}`;
 
   let hours = new Date().getHours();
-  const minutes = new Date().getMinutes();
-  let time = `${hours}:${minutes} AM`;
+  let minutes = new Date().getMinutes();
 
   if (hours > 12) {
     hours -= 12;
-    time = `${hours}:${minutes} PM`;
+  } if (minutes < 10) {
+    minutes = `0${minutes}`;
   }
+
+  const time = `${hours}:${minutes} AM`;
 
   return (dispatch) => {
     dispatch({ type: CHECK_IN_ATTEMPTED, payload: eventKey });

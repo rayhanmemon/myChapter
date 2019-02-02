@@ -11,7 +11,8 @@ import {
   getCurrentLocationAndDate,
   didUserAttend,
   toggleAttendeeList,
-  deleteEvent
+  deleteEvent,
+  refreshEventScreen
 } from '../../actions';
 
 class EventsScreen extends Component {
@@ -34,6 +35,7 @@ class EventsScreen extends Component {
     }
 
     willFocus = () => {
+      this.props.refreshEventScreen(this.props.refreshKey);
       this.props.fetchEventsList(this.props.organization, this.props.rank);
       this.props.getCurrentLocationAndDate();
     }
@@ -205,6 +207,7 @@ class EventsScreen extends Component {
          </Button>
          <List
            enableEmptySections
+           removeClippedSubviews={false}
            dataArray={attendanceData}
            renderRow={this.renderAttendeeRow}
          />
@@ -289,7 +292,7 @@ class EventsScreen extends Component {
       return <Spinner />;
     } else if (this.props.admin) {
       return (
-        <Container>
+        <Container key={this.props.refreshKey}>
           <Content>
             <Button
               transparent
@@ -325,7 +328,8 @@ const mapStateToProps = (state) => {
     eventsAttended,
     selectedAttendeesList,
     currentDate,
-    eventToDelete
+    eventToDelete,
+    refreshKey
   } = state.events;
 
   return ({
@@ -344,7 +348,8 @@ const mapStateToProps = (state) => {
     lastName,
     selectedAttendeesList,
     currentDate,
-    eventToDelete
+    eventToDelete,
+    refreshKey
   });
 };
 
@@ -355,5 +360,6 @@ export default connect(mapStateToProps, {
   getCurrentLocationAndDate,
   didUserAttend,
   toggleAttendeeList,
-  deleteEvent
+  deleteEvent,
+  refreshEventScreen
 })(EventsScreen);

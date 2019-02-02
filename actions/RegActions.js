@@ -114,6 +114,7 @@ export const regChapter = (organization, email, password, firstName, lastName, r
 
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
+    setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
     if (!isRankIncorrect) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
@@ -152,7 +153,7 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
 
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
-
+    setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
     if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '' || organization === '' || regCode === '') {
       dispatch({ type: REGISTRATION_FAIL, payload: 'Please complete all fields' });
     } else if (isRankIncorrect) {
