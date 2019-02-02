@@ -16,12 +16,12 @@ export default class App extends React.Component {
 
   componentWillMount() {
     firebase.initializeApp({
-      apiKey: 'AIzaSyDUdobtrbC3hfg3hJyZvTO2kxzO-PGJ0fM',
-      authDomain: 'ksigapp.firebaseapp.com',
-      databaseURL: 'https://ksigapp.firebaseio.com',
-      projectId: 'ksigapp',
-      storageBucket: 'ksigapp.appspot.com',
-      messagingSenderId: '865998653247'
+      apiKey: 'AIzaSyAkg5srusAbMhyajhVDi_ECnWV4x6kEy_Q',
+      authDomain: 'mychapter-56a86.firebaseapp.com',
+      databaseURL: 'https://mychapter-56a86.firebaseio.com',
+      projectId: 'mychapter-56a86',
+      storageBucket: 'mychapter-56a86.appspot.com',
+      messagingSenderId: '264743273376'
     });
   }
 
