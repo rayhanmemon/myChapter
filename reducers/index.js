@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer } from 'redux-persist';
 
 import LoginReducer from './LoginReducer';
 import RegReducer from './RegReducer';
@@ -9,8 +11,14 @@ import SelectedProfileReducer from './SelectedProfileReducer';
 import CreateEventReducer from './CreateEventReducer';
 import SettingsReducer from './SettingsReducer';
 
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['organization', 'rank', 'loggedIn']
+};
+
 export default combineReducers({
-  auth: LoginReducer,
+  auth: persistReducer(authPersistConfig, LoginReducer),
   register: RegReducer,
   actives: ActivesReducer,
   feed: FeedReducer,

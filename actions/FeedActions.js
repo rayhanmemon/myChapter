@@ -16,8 +16,20 @@ import {
   COMMENT_SUCCESS,
   SELECT_FOR_COMMENTING,
   CANCEL_COMMENTING,
-  HIDE_COMMENTS
+  HIDE_COMMENTS,
+  FETCH_USERS_STATS,
+  FETCH_USERS_STATS_SUCCESS,
 } from '../constants/Types';
+
+export const fetchUsersStats = (organization, rank) => {
+  return (dispatch) => {
+    dispatch({ type: FETCH_USERS_STATS });
+      firebase.database().ref(`${organization}/profiles/${rank}`)
+      .on('value', snapshot => {
+        dispatch({ type: FETCH_USERS_STATS_SUCCESS, payload: snapshot.val() });
+      });
+  };
+};
 
 export const hideComments = () => {
   return { type: HIDE_COMMENTS };

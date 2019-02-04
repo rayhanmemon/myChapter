@@ -14,7 +14,8 @@ import {
   commentChanged,
   onCommentButtonPress,
   selectForCommenting,
-  hideComments
+  hideComments,
+  fetchUsersStats
 } from '../../actions';
 
 class FeedScreen extends Component {
@@ -28,6 +29,7 @@ class FeedScreen extends Component {
 
   componentDidMount() {
     this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
+    this.props.fetchUsersStats(this.props.organization, this.props.rank);
     this.registerForPushNotifications();
   }
 
@@ -320,6 +322,7 @@ const styles = {
 const mapStateToProps = (state) => {
   const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsShown, commentContent, selectedForCommenting } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
+  console.log(state.auth);
   return {
     postContent,
     posting,
@@ -347,5 +350,6 @@ export default connect(mapStateToProps, {
   commentChanged,
   onCommentButtonPress,
   selectForCommenting,
-  hideComments
+  hideComments,
+  fetchUsersStats
 })(FeedScreen);

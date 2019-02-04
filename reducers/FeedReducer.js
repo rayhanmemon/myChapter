@@ -13,7 +13,9 @@ import {
   COMMENT_ATTEMPTED,
   COMMENT_SUCCESS,
   CANCEL_COMMENTING,
-  HIDE_COMMENTS
+  HIDE_COMMENTS,
+  FETCH_USERS_STATS,
+  FETCH_USERS_STATS_SUCCESS
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -32,6 +34,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case FETCH_USERS_STATS:
+      return { ...state, loadingList: true };
     case HIDE_COMMENTS:
       return { ...state, commentsShown: '' };
     case CANCEL_COMMENTING:

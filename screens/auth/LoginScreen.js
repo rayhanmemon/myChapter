@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Content, Form, Item, Input, Button, Text, Spinner, Body } from 'native-base';
 
-import { emailChanged, passwordChanged, loginUser, resetAuthState, fetchUsersOrgAndRank, fetchUsersStats } from '../../actions';
+import { emailChanged, passwordChanged, loginUser, resetAuthState, fetchUsersOrgAndRank } from '../../actions';
 
 class LoginScreen extends Component {
 
@@ -27,7 +27,7 @@ class LoginScreen extends Component {
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
-  
+
   onPasswordChange(text) {
     this.props.passwordChanged(text);
   }
@@ -51,10 +51,6 @@ class LoginScreen extends Component {
     } else if (this.props.loadingOrgAndRank) {
       this.props.fetchUsersOrgAndRank();
       return <Spinner color='orange' />;
-    } else if (this.props.loadingUserProfile) {
-      const { organization, rank } = this.props;
-      this.props.fetchUsersStats(organization, rank);
-      return <Spinner />;
     } return (
       <Button
         block danger
@@ -144,10 +140,10 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { email, password, loadingSignIn, loadingOrgAndRank, loadingUserProfile, error, loggedIn, organization, rank } = state.auth;
+  const { email, password, loadingSignIn, loadingOrgAndRank, error, loggedIn, organization, rank } = state.auth;
   return (
-    { email, password, loadingSignIn, loadingOrgAndRank, loadingUserProfile, error, loggedIn, organization, rank }
+    { email, password, loadingSignIn, loadingOrgAndRank, error, loggedIn, organization, rank }
   );
 };
 
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, resetAuthState, fetchUsersOrgAndRank, fetchUsersStats })(LoginScreen);
+export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, resetAuthState, fetchUsersOrgAndRank })(LoginScreen);

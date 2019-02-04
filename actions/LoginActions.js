@@ -9,8 +9,6 @@ import {
   RESET_AUTH_STATE,
   FETCH_ORG_AND_RANK,
   FETCH_ORG_AND_RANK_SUCCESS,
-  FETCH_USERS_STATS,
-  FETCH_USERS_STATS_SUCCESS,
 } from '../constants/Types';
 
 export const resetAuthState = () => {
@@ -55,15 +53,5 @@ export const fetchUsersOrgAndRank = () => {
     .on('value', snapshot => {
       dispatch({ type: FETCH_ORG_AND_RANK_SUCCESS, payload: snapshot.val() });
     });
-  };
-};
-
-export const fetchUsersStats = (organization, rank) => {
-  return (dispatch) => {
-    dispatch({ type: FETCH_USERS_STATS });
-      firebase.database().ref(`${organization}/profiles/${rank}`)
-      .on('value', snapshot => {
-        dispatch({ type: FETCH_USERS_STATS_SUCCESS, payload: snapshot.val() });
-      });
   };
 };
