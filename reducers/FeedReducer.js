@@ -15,7 +15,8 @@ import {
   CANCEL_COMMENTING,
   HIDE_COMMENTS,
   FETCH_USERS_STATS,
-  FETCH_USERS_STATS_SUCCESS
+  DELETE_COMMENT_ATTEMPTED,
+  DELETE_COMMENT_SUCCESS
 } from '../constants/Types';
 
 const INITIAL_STATE = {
@@ -26,6 +27,7 @@ const INITIAL_STATE = {
   loadingList: true,
   feedData: [],
   postToDelete: '',
+  commentToDelete: '',
   comments: [],
   commentsShown: '',
   messageBoxHeight: 40,
@@ -60,6 +62,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, postToDelete: action.payload };
     case DELETE_POST_SUCCESS:
       return { ...state, postToDelete: '' };
+    case DELETE_COMMENT_ATTEMPTED:
+      return { ...state, commentToDelete: action.payload };
+    case DELETE_COMMENT_SUCCESS:
+      return { ...state, commentToDelete: '' };
     case SHOW_COMMENTS_ATTEMPTED:
       return { ...state, commentsShown: action.payload };
     case SHOW_COMMENTS_SUCCESS:

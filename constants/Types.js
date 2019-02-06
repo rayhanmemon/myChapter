@@ -51,6 +51,8 @@ export const COMMENT_SUCCESS = 'comment_success';
 export const SELECT_FOR_COMMENTING = 'select_for_commenting';
 export const CANCEL_COMMENTING = 'cancel_commenting';
 export const HIDE_COMMENTS = 'hide_comments';
+export const DELETE_COMMENT_ATTEMPTED = 'delete_comment_attempted';
+export const DELETE_COMMENT_SUCCESS = 'delete_comment_success';
 //SelectedProfileReducer Types
 export const UPLOAD_IMAGE = 'upload_image';
 export const UPLOAD_IMAGE_SUCCESS = 'upload_image_success';

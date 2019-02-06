@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, List, Card, CardItem, Body, Text, Left, Right, Button, Input, Spinner } from 'native-base';
+import ExpandingTextInput from '../../components/ExpandingTextInput';
 import { Notifications, Permissions } from 'expo';
 import firebase from 'firebase';
 
@@ -15,7 +16,8 @@ import {
   onCommentButtonPress,
   selectForCommenting,
   hideComments,
-  fetchUsersStats
+  fetchUsersStats,
+  deleteComment
 } from '../../actions';
 
 class FeedScreen extends Component {
@@ -41,6 +43,7 @@ class FeedScreen extends Component {
 
   onSendButtonPress = () => {
     const { postContent, firstName, lastName, rank, organization } = this.props;
+    console.log(postContent);
     if (postContent) {
       this.props.sendButtonPressed(postContent, firstName, lastName, rank, organization);
     }
@@ -78,9 +81,9 @@ class FeedScreen extends Component {
 
   handleCommentButtonPress(key, comments) {
     const commentContent = this.commentContent;
-    const { firstName, lastName, organization } = this.props;
+    const { firstName, lastName, organization, rank } = this.props;
     if (commentContent) {
-      this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent, comments);
+      this.props.onCommentButtonPress(organization, firstName, lastName, key, commentContent, comments, rank);
     }
   }
 
@@ -165,7 +168,31 @@ class FeedScreen extends Component {
     );
   }
 
+  renderDeleteCommentButton = (postKey, commentKey, rankOfCommenter) => {
+    if (this.props.commentToDelete) {
+      return (
+        <Spinner />
+      );
+    } else if (this.props.admin || (this.props.rank === rankOfCommenter)) {
+      return (
+        <Right>
+          <Button
+            transparent
+            danger
+            onPress={() => this.props.deleteComment(this.props.organization, postKey, commentKey)}
+          >
+            <Text style={{ fontSize: 12 }}>Delete</Text>
+          </Button>
+        </Right>
+      );
+  } return;
+}
+
   renderCommentRow = (comment) => {
+    console.log(comment);
+    const postKey = this.props.commentsShown;
+    const commentKey = comment.commentKey;
+    const rankOfCommenter = comment.rank;
     return (
       <CardItem>
         <Left>
@@ -175,6 +202,7 @@ class FeedScreen extends Component {
             <Text style={{ fontSize: 14 }}>{comment.commentContent}</Text>
           </Body>
         </Left>
+        {this.renderDeleteCommentButton(postKey, commentKey, rankOfCommenter)}
       </CardItem>
     );
   }
@@ -216,10 +244,11 @@ class FeedScreen extends Component {
           {this.renderCommentCount(key, comments)}
         </CardItem>
         <CardItem>
-          <Input
+          <ExpandingTextInput
             onChangeText={(text) => this.commentContent = text}
             style={styles.messageBox}
             placeholder='comment here...'
+            multiline
           />
           {this.renderCommentButton(key, comments)}
         </CardItem>
@@ -273,7 +302,7 @@ class FeedScreen extends Component {
       <Container>
         <Content style={styles.contentContainer}>
           <View style={styles.messageBoxContainer}>
-            <Input
+            <ExpandingTextInput
               onChangeText={this.props.postChanged.bind(this)}
               value={this.props.postContent}
               style={styles.messageBox}
@@ -320,9 +349,8 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { postContent, posting, loadingList, feedData, postToDelete, comments, commentsShown, commentContent, selectedForCommenting } = state.feed;
+  const { postContent, posting, loadingList, feedData, postToDelete, commentToDelete, comments, commentsShown, commentContent, selectedForCommenting } = state.feed;
   const { firstName, lastName, rank, organization, admin } = state.auth;
-  console.log(state.auth);
   return {
     postContent,
     posting,
@@ -334,6 +362,7 @@ const mapStateToProps = (state) => {
     organization,
     admin,
     postToDelete,
+    commentToDelete,
     comments,
     commentsShown,
     commentContent,
@@ -351,5 +380,6 @@ export default connect(mapStateToProps, {
   onCommentButtonPress,
   selectForCommenting,
   hideComments,
-  fetchUsersStats
+  fetchUsersStats,
+  deleteComment
 })(FeedScreen);

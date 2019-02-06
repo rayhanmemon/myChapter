@@ -19,6 +19,8 @@ import {
   HIDE_COMMENTS,
   FETCH_USERS_STATS,
   FETCH_USERS_STATS_SUCCESS,
+  DELETE_COMMENT_ATTEMPTED,
+  DELETE_COMMENT_SUCCESS
 } from '../constants/Types';
 
 export const fetchUsersStats = (organization, rank) => {
@@ -86,6 +88,26 @@ export const deletePost = (organization, key) => {
   };
 };
 
+export const deleteComment = (organization, postKey, commentKey) => {
+  return (dispatch) => {
+    dispatch({ type: DELETE_COMMENT_ATTEMPTED, payload: commentKey });
+
+    firebase.database().ref(`${organization}/comments/${postKey}/${commentKey}`).remove()
+    .then(() => {
+      firebase.database().ref(`${organization}/posts/${postKey}/comments`)
+      .once('value', snapshot => {
+        const totalComments = snapshot.val();
+        console.log(totalComments);
+        return firebase.database().ref(`${organization}/posts/${postKey}/comments`)
+        .set(totalComments - 1);
+      });
+    })
+    .then(() => {
+      dispatch({ type: DELETE_COMMENT_SUCCESS });
+    });
+  };
+};
+
 export const sendButtonPressed = (postContent, firstName, lastName, rank, organization) => {
   return (dispatch) => {
     dispatch({ type: SEND_BUTTON_PRESSED });
@@ -98,13 +120,13 @@ export const sendButtonPressed = (postContent, firstName, lastName, rank, organi
   };
 };
 
-export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent, comments) => {
+export const onCommentButtonPress = (organization, firstName, lastName, key, commentContent, comments, rank) => {
   return (dispatch) => {
     dispatch({ type: COMMENT_ATTEMPTED });
     const name = `${firstName} ${lastName}`;
     const time = new Date().toLocaleString();
     firebase.database().ref(`${organization}/comments/${key}`)
-      .push({ name, time, commentContent })
+      .push({ name, time, commentContent, rank })
       .then(() => {
         firebase.database().ref(`${organization}/posts/${key}/comments`)
         .set(comments + 1);
