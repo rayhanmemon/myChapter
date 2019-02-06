@@ -125,7 +125,7 @@ const styles = {
     signInButton: {
     },
     registerButton: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       justifyContent: 'center'
     },
     registerText: {
