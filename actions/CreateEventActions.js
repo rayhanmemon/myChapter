@@ -23,6 +23,18 @@ import {
 } from '../constants/Types';
 
 export const createEvent = (organization, locationName, eventDate, year, month, day, longitude, latitude, startTime, endTime, eventDescription, eventName, eventType) => {
+  let eventTypeTotal = '';
+
+  if (eventType === 'chapter') {
+    eventTypeTotal = 'totalChapters';
+  } else if (eventType === 'brotherhood') {
+    eventTypeTotal = 'totalBrotherhoods';
+  } else if (eventType === 'mixer') {
+    eventTypeTotal = 'totalMixers';
+  } else if (eventType === 'communityService') {
+    eventTypeTotal = 'TotalCommunityService';
+  }
+
   return (dispatch) => {
     dispatch({ type: CREATE_EVENT_ATTEMPT });
     firebase.database().ref(`/${organization}/events/${year}-${month}-${day} ${startTime}`)
@@ -39,6 +51,16 @@ export const createEvent = (organization, locationName, eventDate, year, month, 
         description: eventDescription,
         title: eventName,
         type: eventType
+      })
+      .then(() => {
+        if (eventTypeTotal) {
+          firebase.database().ref(`${organization}/admin/${eventTypeTotal}`)
+          .once('value', snapshot => {
+            const total = snapshot.val();
+            return firebase.database().ref(`${organization}/admin/${eventTypeTotal}`)
+            .set(total + 1);
+          });
+        } return;
       })
       .then(() => {
         dispatch({ type: CREATE_EVENT_SUCCESS });

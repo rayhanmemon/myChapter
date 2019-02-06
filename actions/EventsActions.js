@@ -19,15 +19,39 @@ import {
   DELETE_EVENT_SUCCESS
 } from '../constants/Types';
 
-export const deleteEvent = (organization, eventKey, attendees) => {
+export const deleteEvent = (organization, eventKey, attendees, type) => {
+  let eventTypeTotal = '';
+
+  if (type === 'chapter') {
+    eventTypeTotal = 'totalChapters';
+  } else if (type === 'brotherhood') {
+    eventTypeTotal = 'totalBrotherhoods';
+  } else if (type === 'mixer') {
+    eventTypeTotal = 'totalMixers';
+  } else if (type === 'communityService') {
+    eventTypeTotal = 'TotalCommunityService';
+  }
+
   return (dispatch) => {
     dispatch({ type: DELETE_EVENT_ATTEMPT, payload: eventKey });
     let i = 0;
     for (i = 0; i < attendees.length; i++) {
       firebase.database().ref(`${organization}/profiles/${attendees[i]}/eventsAttended/${eventKey}`).remove();
     }
-      firebase.database().ref(`${organization}/events/${eventKey}`).remove();
-      dispatch({ type: DELETE_EVENT_SUCCESS });
+      firebase.database().ref(`${organization}/events/${eventKey}`).remove()
+      .then(() => {
+        if (eventTypeTotal) {
+          firebase.database().ref(`${organization}/admin/${eventTypeTotal}`)
+          .once('value', snapshot => {
+            const total = snapshot.val();
+            return firebase.database().ref(`${organization}/admin/${eventTypeTotal}`)
+            .set(total - 1);
+          });
+        } return;
+      })
+      .then(() => {
+        dispatch({ type: DELETE_EVENT_SUCCESS });
+      });
   };
 };
 

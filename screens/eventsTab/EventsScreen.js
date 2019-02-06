@@ -49,7 +49,7 @@ class EventsScreen extends Component {
 
   renderDeleteEventButton(event) {
     const { organization } = this.props;
-    const { eventKey } = event;
+    const { eventKey, type } = event;
 
     const attendees = _.map(event.attendees, (val) => {
       return val.rank;
@@ -62,7 +62,7 @@ class EventsScreen extends Component {
         <Button
           transparent
           danger
-          onPress={() => this.props.deleteEvent(organization, eventKey, attendees)}
+          onPress={() => this.props.deleteEvent(organization, eventKey, attendees, type)}
         >
           <Text>Delete</Text>
         </Button>

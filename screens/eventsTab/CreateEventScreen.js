@@ -64,7 +64,10 @@ class CreateEventScreen extends Component {
         style={{ margin: 20 }}
         full
         danger
-        onPress={() => this.props.createEvent(organization, locationName, eventDate, year, month, day, longitude, latitude, startTime, endTime, eventDescription, eventName, eventType)}
+        onPress={() => {
+          this.props.createEvent(organization, locationName, eventDate, year, month, day, longitude, latitude, startTime, endTime, eventDescription, eventName, eventType);
+          this.props.navigation.goBack();
+        }}
       >
         <Text>CREATE EVENT</Text>
       </Button>
@@ -102,10 +105,11 @@ class CreateEventScreen extends Component {
               />
             </Item>
             <Text style={styles.label}>Event Description</Text>
-            <Item style={{ marginBottom: 10 }}>
+            <Item style={{ marginBottom: 10, height: 60 }}>
               <Input
-              onChangeText={this.props.eventDescriptionChanged.bind(this)}
-              value={this.props.eventDescription}
+                onChangeText={this.props.eventDescriptionChanged.bind(this)}
+                value={this.props.eventDescription}
+                multiline
               />
             </Item>
             <Text style={styles.label}>Event Date</Text>
