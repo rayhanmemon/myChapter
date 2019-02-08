@@ -3,7 +3,12 @@
     "name": "myChapter",
     "slug": "myChapter",
     "android": {
-      "package": "com.myChapter.myChapter"
+      "package": "com.myChapter.rayhanmemon",
+      "versionCode": 1,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "privacy": "public",
     "sdkVersion": "31.0.0",
@@ -27,8 +32,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "3",
+      "buildNumber": "4",
       "bundleIdentifier": "com.myChapter.myChapter"
-    }
+    },
   }
 }
