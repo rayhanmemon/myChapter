@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Linking, Alert } from 'react-native';
+import { Permissions } from 'expo';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Container, Content, List, Card, CardItem, Spinner, Text, Body, Left, Right, Button } from 'native-base';
@@ -24,21 +25,37 @@ class EventsScreen extends Component {
     headerTintColor: '#fff'
   };
 
-    componentDidMount() {
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
-    }
+  componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', this.willFocus);
+  }
 
-    componentWillUnmount() {
-      if (this.willFocusSubscription) {
-        this.willFocusSubscription.remove();
-      }
+  componentWillUnmount() {
+    if (this.willFocusSubscription) {
+      this.willFocusSubscription.remove();
     }
+  }
 
-    willFocus = () => {
-      this.props.refreshEventScreen(this.props.refreshKey);
-      this.props.fetchEventsList(this.props.organization, this.props.rank);
-      this.props.getCurrentLocationAndDate();
+  willFocus = () => {
+    this.permissionFlow();
+    this.props.refreshEventScreen(this.props.refreshKey);
+    this.props.fetchEventsList(this.props.organization, this.props.rank);
+    this.props.getCurrentLocationAndDate();
+  }
+
+  permissionFlow = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      Alert.alert(
+        'Open Settings to allow myChapter to use your current location?',
+        'Without your current location, myChapter cannot check you into events.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'OK', onPress: () => Linking.openURL('app-settings:') },
+        ],
+        { cancelable: false }
+      );
     }
+  }
 
   jsCoreDateCreator(dateString) {
     // dateString *HAS* to be in this format "YYYY-MM-DD HH:MM:SS"

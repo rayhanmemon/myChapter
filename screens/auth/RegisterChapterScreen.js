@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { KeyboardAvoidingView } from 'react-native';
 import firebase from 'firebase';
 import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner } from 'native-base';
 
@@ -80,70 +81,72 @@ class RegisterChapterScreen extends Component {
     return (
       <Container>
         <Content>
-          <Card style={{ marginBottom: 10 }}>
-            <Text style={styles.cardTitle}>Chapter Name</Text>
-            <Form>
-              <Item>
-                <Input
-                  placeholder="(e.g Omicron-Pi)"
-                  onChangeText={this.props.regChapterChanged.bind(this)}
-                  value={organization}
-                />
-              </Item>
-            </Form>
-          </Card>
-          <Card>
-            <Text style={styles.cardTitle}>Admin Details</Text>
-            <Form>
-              <Item>
-                <Input
-                  placeholder="Email"
-                  onChangeText={this.props.regEmailChanged.bind(this)}
-                  value={email}
-                />
-              </Item>
-              <Item>
-                <Input
-                  placeholder="Password"
-                  onChangeText={this.props.regPasswordChanged.bind(this)}
-                  value={password}
-                  secureTextEntry
-                />
-              </Item>
-            </Form>
-            <Form>
-              <Item>
-                <Input
-                  placeholder="First Name"
-                  onChangeText={this.props.regFirstNameChanged.bind(this)}
-                  value={firstName}
-                />
-              </Item>
-              <Item>
-                <Input
-                  placeholder="Last Name"
-                  onChangeText={this.props.regLastNameChanged.bind(this)}
-                  value={lastName}
-                />
-              </Item>
-              <Item>
-                <Input
-                  placeholder="Rank"
-                  onChangeText={this.props.regRankChanged.bind(this)}
-                  value={rank}
-                />
-              </Item>
-              <Item>
-                <Input
-                  placeholder="Position"
-                  onChangeText={this.props.regPositionChanged.bind(this)}
-                  value={position}
-                />
-              </Item>
-            </Form>
-          </Card>
-          {this.renderError()}
-          {this.renderButton()}
+          <KeyboardAvoidingView behavior="padding" enabled>
+            <Card style={{ marginBottom: 10 }}>
+              <Text style={styles.cardTitle}>Chapter Name</Text>
+              <Form>
+                <Item>
+                  <Input
+                    placeholder="(e.g Omicron-Pi)"
+                    onChangeText={this.props.regChapterChanged.bind(this)}
+                    value={organization}
+                  />
+                </Item>
+              </Form>
+            </Card>
+            <Card>
+              <Text style={styles.cardTitle}>Admin Details</Text>
+              <Form>
+                <Item>
+                  <Input
+                    placeholder="Email"
+                    onChangeText={this.props.regEmailChanged.bind(this)}
+                    value={email}
+                  />
+                </Item>
+                <Item>
+                  <Input
+                    placeholder="Password"
+                    onChangeText={this.props.regPasswordChanged.bind(this)}
+                    value={password}
+                    secureTextEntry
+                  />
+                </Item>
+              </Form>
+              <Form>
+                <Item>
+                  <Input
+                    placeholder="First Name"
+                    onChangeText={this.props.regFirstNameChanged.bind(this)}
+                    value={firstName}
+                  />
+                </Item>
+                <Item>
+                  <Input
+                    placeholder="Last Name"
+                    onChangeText={this.props.regLastNameChanged.bind(this)}
+                    value={lastName}
+                  />
+                </Item>
+                <Item>
+                  <Input
+                    placeholder="Rank"
+                    onChangeText={this.props.regRankChanged.bind(this)}
+                    value={rank}
+                  />
+                </Item>
+                <Item>
+                  <Input
+                    placeholder="Position"
+                    onChangeText={this.props.regPositionChanged.bind(this)}
+                    value={position}
+                  />
+                </Item>
+              </Form>
+            </Card>
+            {this.renderError()}
+            {this.renderButton()}
+         </KeyboardAvoidingView>
         </Content>
       </Container>
     );

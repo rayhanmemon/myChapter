@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   totalCommunityService: 0,
   totalDues: 0,
   totalMixers: 0,
+  totalFundraising: 0,
   saving: false,
   newThreshold: '',
   errorMessage: ''
@@ -37,7 +38,8 @@ export default (state = INITIAL_STATE, action) => {
         totalChapters: action.payload.totalChapters,
         totalCommunityService: action.payload.totalCommunityService,
         totalDues: action.payload.totalDues,
-        totalMixers: action.payload.totalMixers
+        totalMixers: action.payload.totalMixers,
+        totalFundraising: action.payload.totalFundraising
       };
     case GENERATE_NEW_CODE_ATTEMPT:
       return { ...state, saving: true };

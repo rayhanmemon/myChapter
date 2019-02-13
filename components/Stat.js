@@ -8,17 +8,19 @@ export default class Stat extends Component {
       return '#F00';
     } else if (progress <= 0.5) {
       return '#FF8C00';
-    } else if (progress < 1) {
+    } else if (progress <= 0.8) {
       return '#CCCC00';
     }
     return '#008000';
   }
+
   renderRemainingText(current, total, unit, completionText) {
-    if (current >= total) {
+    if ((unit === 'dollars') && (current >= total)) {
       return (
         <Text style={styles.remainingText}>{completionText}</Text>
       );
-    } return (
+    }
+    return (
       <Text style={styles.remainingText}>{current}/{total} {unit}</Text>
     );
   }
@@ -38,7 +40,7 @@ export default class Stat extends Component {
               height={10}
               color={this.renderColor(progress)}
             />
-            {this.renderRemainingText(current, total, unit, completionText)}
+            {this.renderRemainingText(current || 0, total, unit, completionText)}
           </View>
         );
       case 'pie':

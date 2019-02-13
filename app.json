@@ -5,6 +5,9 @@
     "android": {
       "package": "com.myChapter.rayhanmemon",
       "versionCode": 1,
+      "androidStatusBar": {
+          "backgroundColor": "#ff0000",
+      },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
@@ -22,7 +25,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ed1c24"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -32,8 +35,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "4",
-      "bundleIdentifier": "com.myChapter.myChapter"
+      "buildNumber": "6",
+      "bundleIdentifier": "com.myChapter.myChapter",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Your current location will be used when on the Events Tab to check if you are in range of an event. This is necessary for you to check in to events."
+      },
     },
   }
 }

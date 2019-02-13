@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   selectedChapters: 0,
   selectedCommunityService: 0,
   selectedDues: 0,
+  selectedFundraising: 0,
   selectedFirstName: '',
   selectedLastName: '',
   selectedMixers: 0,
@@ -50,7 +51,8 @@ export default (state = INITIAL_STATE, action) => {
         selectedMixers: action.payload.mixers,
         selectedPosition: action.payload.position,
         selectedGoodStanding: action.payload.goodStanding,
-        selectedRank: action.payload.rank
+        selectedRank: action.payload.rank,
+        selectedFundraising: action.payload.fundraising
       };
     default:
       return state;

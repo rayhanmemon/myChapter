@@ -45,8 +45,9 @@ class BrotherStats extends Component {
     const chapters = this.props.profile.chapters;
     const mixers = this.props.profile.mixers;
     const brotherhoods = this.props.profile.brotherhoods;
+    const fundraising = this.props.profile.fundraising;
 
-    const { totalDues, totalCommunityService, totalChapters, totalMixers, totalBrotherhoods } = this.props;
+    const { totalDues, totalCommunityService, totalChapters, totalMixers, totalBrotherhoods, totalFundraising } = this.props;
 
     return (
       <Container>
@@ -69,6 +70,14 @@ class BrotherStats extends Component {
             total={totalCommunityService}
             unit='hours'
             completionText='All hours complete!'
+          />
+          <Stat
+            type='bar'
+            title='Fundraising'
+            current={fundraising}
+            total={totalFundraising}
+            unit='dollars'
+            completionText='Fundraising goal met!'
           />
           <Text style={{ marginTop: 10, fontSize: 20 }}>Attendance</Text>
           <View style={styles.attendanceContainer}>
@@ -122,7 +131,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { totalDues, totalCommunityService, totalChapters, totalMixers, totalBrotherhoods } = state.selectedProfile;
+  const { totalDues, totalCommunityService, totalChapters, totalMixers, totalBrotherhoods, totalFundraising } = state.selectedProfile;
   const { organization, rank } = state.auth;
   return {
     totalDues,
@@ -130,6 +139,7 @@ const mapStateToProps = (state) => {
     totalChapters,
     totalMixers,
     totalBrotherhoods,
+    totalFundraising,
     organization,
     rank
   };

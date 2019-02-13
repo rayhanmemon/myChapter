@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert } from 'react-native';
+import { Alert, KeyboardAvoidingView } from 'react-native';
 import { Container, Content, Form, Item, Input, Label, Text, Picker, Spinner, Icon, Image, Button } from 'native-base';
 import { ImagePicker, Permissions } from 'expo';
 import firebase from 'firebase';
@@ -12,6 +12,7 @@ import {
   communityServiceEdited,
   chaptersEdited,
   mixersEdited,
+  fundraisingEdited,
   brotherhoodsEdited,
   goodStandingEdited,
   adminEdited,
@@ -69,6 +70,7 @@ class EditStats extends Component {
       goodStanding: (this.props.goodStanding === 'true'),
       dues: parseInt(this.props.dues, 10),
       communityService: parseInt(this.props.communityService, 10),
+      fundraising: parseInt(this.props.fundraising, 10),
       chapters: parseInt(this.props.chapters, 10),
       mixers: parseInt(this.props.mixers, 10),
       brotherhoods: parseInt(this.props.brotherhoods, 10)
@@ -122,7 +124,7 @@ class EditStats extends Component {
   }
 
   render() {
-    const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods } = this.props;
+    const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, fundraising } = this.props;
 
     const positionInitial = this.props.profile.position;
     const duesInitial = this.props.profile.dues.toString();
@@ -130,12 +132,14 @@ class EditStats extends Component {
     const chaptersInitial = this.props.profile.chapters.toString();
     const mixersInitial = this.props.profile.mixers.toString();
     const brotherhoodsInitial = this.props.profile.brotherhoods.toString();
+    const fundraisingInitial = this.props.profile.fundraising.toString();
     const rank = this.props.profile.rank;
     //const image = this.props.image;
 
     return (
       <Container>
         <Content contentContainerStyle={styles.content}>
+          <KeyboardAvoidingView>
             {/*<Button
               transparent
               onPress={() => this.onChooseImagePress()}
@@ -183,6 +187,14 @@ class EditStats extends Component {
                 />
               </Item>
               <Item>
+                <Label style={{ color: 'black' }}>Fundraising</Label>
+                <Input
+                  placeholder={fundraisingInitial}
+                  onChangeText={this.props.fundraisingEdited.bind(this)}
+                  value={fundraising}
+                />
+              </Item>
+              <Item>
                 <Label style={{ color: 'black' }}>Chapters</Label>
                 <Input
                   placeholder={chaptersInitial}
@@ -209,7 +221,8 @@ class EditStats extends Component {
             </Form>
             {this.renderError()}
             {this.renderButton(rank)}
-          </Content>
+          </KeyboardAvoidingView>
+        </Content>
       </Container>
     );
   }
@@ -241,7 +254,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, loading, admin, image, error } = state.selectedProfile;
+  const { position, goodStanding, dues, fundraising, communityService, chapters, mixers, brotherhoods, loading, admin, image, error } = state.selectedProfile;
   const { organization, rank, admin: userIsAdmin } = state.auth;
   return (
     {
@@ -258,6 +271,7 @@ const mapStateToProps = (state) => {
       loading,
       rank,
       userIsAdmin,
+      fundraising,
       error
     }
   );
@@ -276,5 +290,6 @@ export default connect(mapStateToProps, {
   saveStats,
   uploadImageSuccess,
   uploadImageAttempt,
-  initializeStandingAndPriveleges
+  initializeStandingAndPriveleges,
+  fundraisingEdited
 })(EditStats);

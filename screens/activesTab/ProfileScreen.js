@@ -59,6 +59,7 @@ class ProfileScreen extends Component {
       brotherhoods: this.props.selectedBrotherhoods,
       chapters: this.props.selectedChapters,
       communityService: this.props.selectedCommunityService,
+      fundraising: this.props.selectedFundraising || 0,
       dues: this.props.selectedDues,
       firstName: this.props.selectedFirstName,
       lastName: this.props.selectedLastName,
@@ -95,6 +96,7 @@ const mapStateToProps = (state) => {
     selectedMixers,
     selectedPosition,
     selectedRank,
+    selectedFundraising,
     selectedGoodStanding } = state.actives;
   const { organization } = state.auth;
   const { adminModeActive } = state.selectedProfile;
@@ -116,6 +118,7 @@ const mapStateToProps = (state) => {
     selectedRank,
     selectedGoodStanding,
     adminModeActive,
+    selectedFundraising
     }
   );
 };

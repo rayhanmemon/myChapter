@@ -7,6 +7,7 @@ import {
   EDIT_CHAPTERS,
   EDIT_MIXERS,
   EDIT_BROTHERHOODS,
+  EDIT_FUNDRAISING,
   EDIT_GOOD_STANDING,
   EDIT_ADMIN,
   SAVE_NEW_STATS,
@@ -26,9 +27,11 @@ const INITIAL_STATE = {
   totalChapters: 0,
   totalMixers: 0,
   totalBrotherhoods: 0,
+  totalFundraising: 0,
   brotherhoods: '',
   chapters: '',
   communityService: '',
+  fundraising: '',
   dues: '',
   firstName: '',
   lastName: '',
@@ -50,6 +53,7 @@ export default (state = INITIAL_STATE, action) => {
         brotherhooods: action.payload.brotherhoodsInitial,
         chapters: action.payload.chaptersInitial,
         communityService: action.payload.communityServiceInitial,
+        fundraising: action.payload.fundraisingInitial,
         dues: action.payload.duesInitial,
         mixers: action.payload.mixersInitial,
         position: action.payload.positionInitial
@@ -62,11 +66,14 @@ export default (state = INITIAL_STATE, action) => {
         totalChapters: action.payload.totalChapters,
         totalMixers: action.payload.totalMixers,
         totalBrotherhoods: action.payload.totalBrotherhoods,
+        totalFundraising: action.payload.totalFundraising
       };
     case TOGGLE_ADMIN_MODE:
       return { ...state, adminModeActive: action.payload };
     case EDIT_POSITION:
       return { ...state, position: action.payload };
+    case EDIT_FUNDRAISING:
+      return { ...state, fundraising: action.payload };
     case EDIT_DUES:
       return { ...state, dues: action.payload };
     case EDIT_COMMUNITYSERVICE:

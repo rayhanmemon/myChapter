@@ -18,7 +18,8 @@ import {
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILED,
   SET_INITIAL_VALUES,
-  INITIALIZE_STANDING_AND_PRIVELEGES
+  INITIALIZE_STANDING_AND_PRIVELEGES,
+  EDIT_FUNDRAISING
 } from '../constants/Types';
 
 export const initializeStandingAndPriveleges = (adminInitial, standingInitial) => {
@@ -90,6 +91,13 @@ export const communityServiceEdited = (text) => {
   };
 };
 
+export const fundraisingEdited = (text) => {
+  return {
+    type: EDIT_FUNDRAISING,
+    payload: text
+  };
+};
+
 export const chaptersEdited = (text) => {
   return {
     type: EDIT_CHAPTERS,
@@ -126,10 +134,10 @@ export const adminEdited = (text) => {
 };
 
 export const saveStats = (organization, rank, newStats) => {
-  const { admin, position, goodStanding, dues, communityService, chapters, mixers, brotherhoods } = newStats;
+  const { admin, position, goodStanding, dues, communityService, chapters, mixers, brotherhoods, fundraising } = newStats;
   return (dispatch) => {
     dispatch({ type: SAVE_NEW_STATS });
-    setTimeout(() => { dispatch({ type: SAVE_NEW_STATS_FAILED }); }, 6000);
+    const timeout = setTimeout(() => { dispatch({ type: SAVE_NEW_STATS_FAILED }); }, 6000);
     const profileRef = firebase.database().ref(`${organization}/profiles/${rank}`);
     //update position
     if (position !== '') {
@@ -144,6 +152,9 @@ export const saveStats = (organization, rank, newStats) => {
     //update dues
     if (!isNaN(dues)) {
       profileRef.child('dues').set(dues);
+    }
+    if (!isNaN(fundraising)) {
+      profileRef.child('fundraising').set(fundraising);
     }
     //update communityService
     if (!isNaN(communityService)) {
@@ -162,5 +173,6 @@ export const saveStats = (organization, rank, newStats) => {
       profileRef.child('brotherhoods').set(brotherhoods);
     }
     dispatch({ type: SAVE_NEW_STATS_SUCCESS });
+    clearTimeout(timeout);
   };
 };

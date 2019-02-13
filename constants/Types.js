@@ -71,6 +71,7 @@ export const EDIT_GOOD_STANDING = 'edit_good_standing';
 export const EDIT_ADMIN = 'edit_admin';
 export const SET_INITIAL_VALUES = 'set_initial_values';
 export const INITIALIZE_STANDING_AND_PRIVELEGES = 'initialize_standing_and_priveleges';
+export const EDIT_FUNDRAISING = 'edit_fundraising';
 //EventsReducer Types
 export const REQUEST_EVENTS_LIST_DATA = 'request_events_list_data';
 export const REQUEST_EVENTS_LIST_DATA_SUCCESS = 'request_events_list_data_success';

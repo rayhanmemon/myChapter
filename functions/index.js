@@ -18,8 +18,9 @@ exports.sendPushNotification = functions.database.ref('/{organization}/posts/{po
 
       return organizationRef.child('/profiles').once('value').then(snapshot => {
         snapshot.forEach(childSnapshot => {
-          let pushToken = childSnapshot.val().pushToken;
-          if (pushToken) {
+          profile = childSnapshot.val();
+          let pushToken = profile.pushToken;
+          if (pushToken && (post.rank === profile.rank )) {
             messages.push({
               "to": pushToken,
               "title" : post.name,

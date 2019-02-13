@@ -111,11 +111,18 @@ export const regChapter = (organization, email, password, firstName, lastName, r
   const randomCode = `${organization}-${(Math.floor(Math.random() * 10000) + 99999).toString()}`;
 
   const isRankIncorrect = isNaN(rank);
+  const isPasswordIncorrect = (password.length < 6);
 
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
-    setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
-    if (!isRankIncorrect) {
+    const timeout = setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
+    if (isPasswordIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Password must be longer than 5 characters' });
+      clearTimeout(timeout);
+    } else if (isRankIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
+      clearTimeout(timeout);
+    } else {
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
           const user = firebase.auth().currentUser;
@@ -126,17 +133,19 @@ export const regChapter = (organization, email, password, firstName, lastName, r
           firebase.database().ref(`/${organization}/profiles/${rank}`)
             .set({ firstName, lastName, rank, position: position || '', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
           firebase.database().ref(`/${organization}/admin`)
-            .set({ securityCode: randomCode, totalBrotherhoods: 5, totalChapters: 5, totalCommunityService: 10, totalDues: 100, totalMixers: 5, });
+            .set({ securityCode: randomCode, totalBrotherhoods: 5, totalChapters: 5, totalCommunityService: 10, totalDues: 100, totalMixers: 5, totalFundraising: 50 });
           firebase.database().ref('/organizations')
             .push(`${organization}`);
         })
         .then(() => {
+          clearTimeout(timeout);
           dispatch({ type: REGISTRATION_SUCCESS });
         })
         .catch(() => {
           dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again' });
+          clearTimeout(timeout);
       });
-    } dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
+    }
   };
 };
 
@@ -150,12 +159,15 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
   const admin = false;
 
   const isRankIncorrect = isNaN(rank);
+  const isPasswordIncorrect = (password.length < 6);
 
   return (dispatch) => {
     dispatch({ type: REGISTRATION });
     setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
     if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '' || organization === '' || regCode === '') {
       dispatch({ type: REGISTRATION_FAIL, payload: 'Please complete all fields' });
+    } else if (isPasswordIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Password must be longer than 5 characters' });
     } else if (isRankIncorrect) {
       dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
     } else {

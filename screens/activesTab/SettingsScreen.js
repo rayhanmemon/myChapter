@@ -42,7 +42,7 @@ class SettingsScreen extends Component {
          />
          <SettingsList.Header headerText='Stat Thresholds' headerStyle={{ color: 'black', fontWeight: 'bold', marginTop: 20 }} />
          <SettingsList.Item
-           title={`Total Dues (${this.props.totalDues} dollars)`}
+           title={`Total Dues (${this.props.totalDues} Dollars)`}
            backgroundColor='white'
            titleStyle={{ color: 'black' }}
            onPress={() => this.props.navigation.navigate('EditThreshold', {
@@ -59,6 +59,16 @@ class SettingsScreen extends Component {
              title: 'Edit CS Hours Needed',
              value: 'totalCommunityService',
              currentValue: this.props.totalCommunityService,
+           })}
+         />
+         <SettingsList.Item
+           title={`Fundraising Requirements (${this.props.totalFundraising} Dollars)`}
+           backgroundColor='white'
+           titleStyle={{ color: 'black' }}
+           onPress={() => this.props.navigation.navigate('EditThreshold', {
+             title: 'Edit Fundraising Requirements',
+             value: 'totalFundraising',
+             currentValue: this.props.totalFundraising,
            })}
          />
            <SettingsList.Item
@@ -142,6 +152,7 @@ const mapStateToProps = (state) => {
     totalChapters,
     totalCommunityService,
     totalDues,
+    totalFundraising,
     totalMixers,
     errorMessage
   } = state.settings;
@@ -158,6 +169,7 @@ const mapStateToProps = (state) => {
     totalChapters,
     totalCommunityService,
     totalDues,
+    totalFundraising,
     totalMixers,
     errorMessage
   });
