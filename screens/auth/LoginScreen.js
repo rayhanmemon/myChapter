@@ -95,7 +95,7 @@ class LoginScreen extends Component {
             </Button>
             <Button
               transparent primary
-              onPress={() => this.props.navigation.navigate('joinChapter')}
+              onPress={() => this.props.navigation.navigate('ChooseRole')}
             >
               <Text style={styles.registerText}>Join Existing Chapter</Text>
             </Button>

@@ -41,7 +41,7 @@ EventsStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
+      name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
       color={tintColor}
     />
   ),
@@ -56,11 +56,11 @@ const ActivesStack = createStackNavigator({
 });
 
 ActivesStack.navigationOptions = {
-  tabBarLabel: 'Actives',
+  tabBarLabel: 'Stats',
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
+      name={Platform.OS === 'ios' ? 'ios-stats' : 'md-stats'}
       color={tintColor}
     />
   ),

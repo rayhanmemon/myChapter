@@ -149,14 +149,7 @@ export const regChapter = (organization, email, password, firstName, lastName, r
   };
 };
 
-export const regUser = (organization, regCode, email, password, firstName, lastName, rank, position) => {
-  const goodStanding = true;
-  const dues = 0;
-  const communityService = 0;
-  const chapters = 0;
-  const mixers = 0;
-  const brotherhoods = 0;
-  const admin = false;
+export const regObserver = (organization, regCode, email, password, firstName, lastName, rank, position) => {
 
   const isRankIncorrect = isNaN(rank);
   const isPasswordIncorrect = (password.length < 6);
@@ -179,9 +172,49 @@ export const regUser = (organization, regCode, email, password, firstName, lastN
               firebase.database().ref(`/users/${user.uid}`)
                 .set({ organization, rank });
               firebase.database().ref(`/${organization}/activesList/${rank}`)
+                .set({ firstName, lastName, observer: true, position: position || 'No Position' });
+            })
+            .then(() => {
+              dispatch({ type: REGISTRATION_SUCCESS });
+            })
+            .catch(() => {
+              dispatch({ type: REGISTRATION_FAIL, payload: 'Registration Failed. Please Try Again' });
+            });
+        } else {
+          dispatch({ type: REGISTRATION_FAIL, payload: 'Incorrect registration code' });
+        }
+      });
+    }
+  };
+};
+
+export const regUser = (organization, regCode, email, password, firstName, lastName, rank, position) => {
+  const admin = false;
+
+  const isRankIncorrect = isNaN(rank);
+  const isPasswordIncorrect = (password.length < 6);
+
+  return (dispatch) => {
+    dispatch({ type: REGISTRATION });
+    setTimeout(() => { dispatch({ type: REGISTRATION_FAIL, payload: 'Timeout Error. Please Try Again.' }); }, 6000);
+    if (firstName === '' || lastName === '' || email === '' || password === '' || rank === '' || organization === '' || regCode === '') {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Please complete all fields' });
+    } else if (isPasswordIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Password must be longer than 5 characters' });
+    } else if (isRankIncorrect) {
+      dispatch({ type: REGISTRATION_FAIL, payload: 'Rank can only be a number' });
+    } else {
+      firebase.database().ref(`/${organization}/admin/`).on('value', snapshot => {
+        if (snapshot.val().securityCode === regCode) {
+          firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+              const user = firebase.auth().currentUser;
+              firebase.database().ref(`/users/${user.uid}`)
+                .set({ organization, rank });
+              firebase.database().ref(`/${organization}/observerList/${rank}`)
                 .set({ firstName, lastName, position: position || 'No Position' });
               firebase.database().ref(`/${organization}/profiles/${rank}`)
-                .set({ firstName, lastName, rank, position: position || 'No Position', goodStanding, dues, communityService, chapters, mixers, brotherhoods, admin });
+                .set({ firstName, lastName, rank, position: position || 'No Position', admin });
             })
             .then(() => {
               dispatch({ type: REGISTRATION_SUCCESS });

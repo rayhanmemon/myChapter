@@ -1,5 +1,6 @@
 import {
   REQUEST_LIST_DATA,
+  REQUEST_OBSERVER_LIST_SUCCESS,
   REQUEST_LIST_DATA_SUCCESS,
   REQUEST_LIST_DATA_FAILED,
   FETCH_SELECTED_PROFILE,
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   loadingProfile: false,
   error: '',
   listData: [],
+  observerData: [],
   //selectedProfileStats
   selectedAdmin: false,
   selectedBrotherhoods: 0,
@@ -31,6 +33,8 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case REQUEST_LIST_DATA:
       return { ...state, loadingList: true };
+    case REQUEST_OBSERVER_LIST_SUCCESS:
+      return { ...state, observerData: action.payload };
     case REQUEST_LIST_DATA_SUCCESS:
       return { ...state, listData: action.payload, loadingList: false, error: '' };
     case REQUEST_LIST_DATA_FAILED:

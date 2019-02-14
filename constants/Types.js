@@ -35,6 +35,7 @@ export const FETCH_STATS_SUCCESS = 'fetch_state_success';
 export const SELECT_ACTIVE_BY_RANK = 'select_active_by_rank';
 export const FETCH_SELECTED_PROFILE = 'fetch_selected_profile';
 export const FETCH_SELECTED_PROFILE_SUCCESS = 'fetch_selected_profile_success';
+export const REQUEST_OBSERVER_LIST_SUCCESS = 'request_observer_list_success';
 //FeedReducer Types
 export const POST_CHANGED = 'post_changed';
 export const SEND_BUTTON_PRESSED = 'send_button_pressed';

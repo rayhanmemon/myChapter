@@ -1,54 +1,42 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import firebase from 'firebase';
-import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner } from 'native-base';
+import { connect } from 'react-redux';
+import { Container, Content, Form, Card, Item, Input, Text, Button, Spinner, Picker, Icon } from 'native-base';
 
 import {
   regChapterChanged,
+  regCodeChanged,
   regEmailChanged,
   regPasswordChanged,
   regFirstNameChanged,
   regLastNameChanged,
   regRankChanged,
   regPositionChanged,
-  regChapter,
-  resetRegisterState,
-  fetchOrganizationList,
-  orgNameTaken
+  regObserver,
+  resetRegisterState
 } from '../../actions';
 
 class RegisterChapterScreen extends Component {
   static navigationOptions = {
-    title: 'Register a Chapter',
+    title: 'Join a Chapter',
   };
 
   componentWillMount() {
     this.props.resetRegisterState();
-    this.props.fetchOrganizationList();
   }
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.registerSuccess) {
       nextProps.resetRegisterState();
       nextProps.navigation.navigate('Login');
+      console.log('worked');
       return false;
     } return true;
   }
 
   onButtonPress() {
-    const { organizationList, organization, email, password, firstName, lastName, rank, position } = this.props;
-    let i = 0;
-    let isTaken = false;
-    for (i = 0; i < organizationList.length; i++) {
-      if (organization === organizationList[i]) {
-        isTaken = true;
-      }
-    }
-    if (isTaken) {
-      this.props.orgNameTaken();
-    } else {
-      this.props.regChapter(organization, email, password, firstName, lastName, rank, position);
-    }
+    const { organization, regCode, email, password, firstName, lastName, rank, position } = this.props;
+    this.props.regObserver(organization, regCode, email, password, firstName, lastName, rank, position);
   }
 
   renderError() {
@@ -58,6 +46,7 @@ class RegisterChapterScreen extends Component {
       );
     }
   }
+
   renderButton() {
     if (this.props.loading) {
       return (
@@ -70,30 +59,48 @@ class RegisterChapterScreen extends Component {
         style={styles.button}
         onPress={this.onButtonPress.bind(this)}
       >
-        <Text>REGISTER CHAPTER</Text>
+        <Text>JOIN CHAPTER</Text>
+      </Button>
+    );
+  }
+
+  renderOrganizationPicker() {
+    const { organization } = this.props;
+    const buttonText = organization || 'Select Organization';
+
+    return (
+      <Button
+        transparent
+        onPress={() => this.props.navigation.navigate('SelectOrg')}
+      >
+        <Text>{buttonText}</Text>
       </Button>
     );
   }
 
   render() {
-    const { organization, email, password, firstName, lastName, rank, position } = this.props;
+    const { regCode, email, password, firstName, lastName, rank, position } = this.props;
+
     return (
       <Container>
         <Content>
           <Card style={{ marginBottom: 10 }}>
-            <Text style={styles.cardTitle}>Chapter Name</Text>
+            <Text style={styles.cardTitle}>Chapter</Text>
             <Form>
+                {this.renderOrganizationPicker()}
+              <Text style={styles.cardTitle}>Registration Code</Text>
+              <Text style={styles.cardSubText}>provided by chapter admin</Text>
               <Item>
                 <Input
-                  placeholder="(e.g Omicron-Pi)"
-                  onChangeText={this.props.regChapterChanged.bind(this)}
-                  value={organization}
+                  placeholder="e.g Omicron-Pi-105517"
+                  onChangeText={this.props.regCodeChanged.bind(this)}
+                  value={regCode}
                 />
               </Item>
             </Form>
           </Card>
           <Card>
-            <Text style={styles.cardTitle}>Admin Details</Text>
+            <Text style={styles.cardTitle}>Create Profile</Text>
             <Form>
               <Item>
                 <Input
@@ -173,9 +180,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { organization, organizationList, email, password, firstName, lastName, rank, position, loading, error, registerSuccess } = state.register;
+  const { organization, regCode, email, password, firstName, lastName, rank, position, loading, error, registerSuccess } = state.register;
   return (
-    { organization, organizationList, email, password, firstName, lastName, rank, position, loading, error, registerSuccess }
+    { organization, regCode, email, password, firstName, lastName, rank, position, loading, error, registerSuccess }
   );
 };
 
@@ -187,8 +194,7 @@ export default connect(mapStateToProps, {
   regLastNameChanged,
   regRankChanged,
   regPositionChanged,
-  regChapter,
+  regCodeChanged,
+  regObserver,
   resetRegisterState,
-  fetchOrganizationList,
-  orgNameTaken
 })(RegisterChapterScreen);
